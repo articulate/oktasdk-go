@@ -131,3 +131,23 @@ func TestIdentityProviderUpdate(t *testing.T) {
 		t.Errorf("client.IdentityProviders.UpdateIdentityProvider returned \n\t%+v, want \n\t%+v\n", outputIdentityProvider.Name, testIdentityProvider.Name)
 	}
 }
+
+func TestIdentityProviderDelete(t *testing.T) {
+
+	setup()
+	defer teardown()
+	setupTestIdentityProvider()
+
+	testIdentityProvider.ID = "0oa62bfdiumsUndnZ0h7"
+
+	mux.HandleFunc("/idps/0oa62bfdiumsUndnZ0h7", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		testAuthHeader(t, r)
+		fmt.Fprint(w, "")
+	})
+
+	_, err := client.IdentityProviders.DeleteIdentityProvider("0oa62bfdiumsUndnZ0h7")
+	if err != nil {
+		t.Errorf("IdentityProviders.DeleteIdentityProvider returned error: %v", err)
+	}
+}
