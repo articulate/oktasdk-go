@@ -96,6 +96,9 @@ type Client struct {
 
 	// Service for Working with Schemas
 	Schemas *SchemasService
+
+	// Service for Working with Identity Providers
+	IdentityProviders *IdentityProvidersService
 }
 
 type service struct {
@@ -149,6 +152,7 @@ func NewClientWithBaseURL(httpClient *http.Client, baseURL *url.URL, apiToken st
 	c.Apps = (*AppsService)(&c.common)
 	c.Policies = (*PoliciesService)(&c.common)
 	c.Schemas = (*SchemasService)(&c.common)
+	c.IdentityProviders = (*IdentityProvidersService)(&c.common)
 	return c
 }
 
