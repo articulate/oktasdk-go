@@ -7,6 +7,10 @@ import (
 
 type IdentityProvidersService service
 
+func (p *IdentityProvidersService) IdentityProvider() IdentityProvider {
+	return IdentityProvider{}
+}
+
 type IdentityProvider struct {
 	ID          string    `json:"id"`
 	Type        string    `json:"type"`
