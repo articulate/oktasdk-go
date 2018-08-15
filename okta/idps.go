@@ -7,6 +7,10 @@ import (
 
 type IdentityProvidersService service
 
+func (p *IdentityProvidersService) IdentityProvider() IdentityProvider {
+	return IdentityProvider{}
+}
+
 type IdentityProvider struct {
 	ID          string    `json:"id"`
 	Type        string    `json:"type"`
@@ -132,4 +136,20 @@ func (p *IdentityProvidersService) UpdateIdentityProvider(id string, idp interfa
 	}
 
 	return updateIdentityProvider, resp, err
+}
+
+// DeleteIdentityprovider: Delete a identityprovider
+// Requires Identityprovider ID from Identityprovider object
+func (p *IdentityProvidersService) DeleteIdentityProvider(id string) (*Response, error) {
+	u := fmt.Sprintf("idps/%v", id)
+	req, err := p.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := p.client.Do(req, nil)
+	if err != nil {
+		return resp, err
+	}
+
+	return resp, err
 }
