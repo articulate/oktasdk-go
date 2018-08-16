@@ -12,76 +12,76 @@ func (p *IdentityProvidersService) IdentityProvider() IdentityProvider {
 }
 
 type IdentityProvider struct {
-	ID          string    `json:"id"`
-	Type        string    `json:"type"`
-	Status      string    `json:"status"`
-	Name        string    `json:"name"`
-	Created     time.Time `json:"created"`
-	LastUpdated time.Time `json:"lastUpdated"`
+	ID          string    `json:"id,omitempty"`
+	Type        string    `json:"type,omitempty"`
+	Status      string    `json:"status,omitempty"`
+	Name        string    `json:"name,omitempty"`
+	Created     time.Time `json:"created,omitempty"`
+	LastUpdated time.Time `json:"lastUpdated,omitempty"`
 	Protocol    struct {
-		Type      string `json:"type"`
+		Type      string `json:"type,omitempty"`
 		Endpoints struct {
 			Authorization struct {
-				Url     string `json:"url"`
-				Binding string `json:"binding"`
-			} `json:"authorization"`
+				Url     string `json:"url,omitempty"`
+				Binding string `json:"binding,omitempty"`
+			} `json:"authorization,omitempty"`
 			Token struct {
-				Url     string `json:"url"`
-				Binding string `json:"binding"`
+				Url     string `json:"url,omitempty"`
+				Binding string `json:"binding,omitempty"`
 			}
-		} `json:"endpoints"`
-		Scopes      []string `json:"scopes"`
+		} `json:"endpoints,omitempty"`
+		Scopes      []string `json:"scopes,omitempty"`
 		Credentials struct {
 			Client struct {
-				ClientID     string `json:"client_id"`
-				ClientSecret string `json:"client_secret"`
-			} `json:"client"`
-		} `json:"credentials"`
-	} `json:"protocol"`
+				ClientID     string `json:"client_id,omitempty"`
+				ClientSecret string `json:"client_secret,omitempty"`
+			} `json:"client,omitempty"`
+		} `json:"credentials,omitempty"`
+	} `json:"protocol,omitempty"`
 	Policy struct {
 		Provisioning struct {
-			Action        string `json:"action"`
-			ProfileMaster bool   `json:"profileMaster"`
+			Action        string `json:"action,omitempty"`
+			ProfileMaster bool   `json:"profileMaster,omitempty"`
 			Groups        struct {
-				Action string `json:"action"`
-			} `json:"groups"`
+				Action string `json:"action,omitempty"`
+			} `json:"groups,omitempty"`
 			Conditions struct {
 				Deprovisioned struct {
-					Action string `json:"action"`
-				} `json:"deprovisioned"`
+					Action string `json:"action,omitempty"`
+				} `json:"deprovisioned,omitempty"`
 				Suspended struct {
-					Action string `json:"action"`
-				} `json:"suspended"`
-			} `json:"conditions"`
-		} `json:"provisioning"`
+					Action string `json:"action,omitempty"`
+				} `json:"suspended,omitempty"`
+			} `json:"conditions,omitempty"`
+		} `json:"provisioning,omitempty"`
 		AccountLink struct {
-			Filter string `json:"filter"`
-			Action string `json:"action"`
-		} `json:"accountLink"`
+			Filter string `json:"filter,omitempty"`
+			Action string `json:"action,omitempty"`
+		} `json:"accountLink,omitempty"`
 		Subject struct {
 			UserNameTemplate struct {
-				Template string `json:"template"`
-			} `json:"userNameTemplate"`
-			Filter    string `json:"filter"`
-			MatchType string `json:"matchType"`
-		} `json:"subject"`
-		MaxClockSkew int `json:"maxClockSkew"`
-	} `json:"policy"`
+				Template string `json:"template,omitempty"`
+			} `json:"userNameTemplate,omitempty"`
+			Filter    string `json:"filter,omitempty"`
+			MatchType string `json:"matchType,omitempty"`
+		} `json:"subject,omitempty"`
+		MaxClockSkew int `json:"maxClockSkew,omitempty"`
+	} `json:"policy,omitempty"`
 	Links struct {
 		Authorize struct {
-			Href      string `json:"href"`
-			Templated bool   `json:"templated"`
+			Href      string `json:"href,omitempty"`
+			Templated bool   `json:"templated,omitempty"`
 			Hints     struct {
-				Allow []string `json:"allow"`
-			} `json:"hints"`
-		} `json:"authorize"`
+				Allow []string `json:"allow,omitempty"`
+			} `json:"hints,omitempty"`
+		} `json:"authorize,omitempty"`
 		ClientRedirectUri struct {
-			Href  string `json:"href"`
+			Href  string `json:"href,omitempty"`
 			Hints struct {
-				Allow []string `json:"allow"`
-			} `json:"hints"`
-		} `json:"clientRedirectUri"`
-	} `json:"_links"`
+				Allow []string `json:"allow,omitempty"`
+			} `json:"hints,omitempty"`
+		} `json:"clientRedirectUri,omitempty"`
+	} `json:"_links,omitempty"`
 }
 
 // GetIdentityProvider: Get an IdP
