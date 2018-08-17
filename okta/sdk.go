@@ -7,6 +7,7 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
+	"net/http/httputil"
 	"net/url"
 	"regexp"
 	"strconv"
@@ -497,7 +498,8 @@ func (c *Client) NewRequest(method, urlStr string, body interface{}) (*http.Requ
 
 	req, err := http.NewRequest(method, u.String(), buf)
 
-	strang := string(req.Body[:])
+	req, _ := httputil.RequestDump(req, true);
+	strang := string(req[:])
 	fmt.Println(strang)
 
 	if err != nil {
