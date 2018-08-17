@@ -30,26 +30,26 @@ var testUserNameTemplate *UserNameTemplate
 func setupTestIdentityProvider() {
 	hmm, _ := time.Parse("2006-01-02T15:04:05.000Z", "2018-02-16T19:59:05.000Z")
 
-  testAccountLink = &AccountLink {
-  	Action: "NONE",
-  	Filter: "NONE",
-  }
+	testAccountLink = &AccountLink{
+		Action: "NONE",
+		Filter: "NONE",
+	}
 
-  testPolicy = &Policy {
-    MaxClockSkew: 0,
-  }
+	testPolicy = &Policy{
+		MaxClockSkew: 0,
+	}
 
-  testProvisioning = &Provisioning {
-  	Action: "NONE",
-  	ProfileMaster: false,
-  }
+	testProvisioning = &Provisioning{
+		Action:        "NONE",
+		ProfileMaster: false,
+	}
 
-  testSubject = &Subject {
-    Filter:    "NONE",
-    MatchType: "USERNAME",
-  }
+	testSubject = &Subject{
+		Filter:    "NONE",
+		MatchType: "USERNAME",
+	}
 
-	testProtocol = &Protocol {
+	testProtocol = &Protocol{
 		Type: "OIDC",
 	}
 
@@ -61,19 +61,19 @@ func setupTestIdentityProvider() {
 	testProvisioning.Conditions.Suspended.Action = "NONE"
 	testSubject.UserNameTemplate.Template = "idpuser.userPrincipalName"
 
-	testIdentityProvider = &IdentityProvider {
-		Type:        "GOOGLE",
-		Name:        "Google",
+	testIdentityProvider = &IdentityProvider{
+		Type: "GOOGLE",
+		Name: "Google",
 	}
 
 	testIdentityProvider.Protocol = testProtocol
 	testIdentityProvider.Policy = testPolicy
 	testIdentityProvider.Policy.Provisioning = testProvisioning
 	testIdentityProvider.Policy.AccountLink = testAccountLink
-  testIdentityProvider.Policy.Subject = testSubject
+	testIdentityProvider.Policy.Subject = testSubject
 }
 
-func TestGetIdentityProvider(t &testing.T) {
+func TestGetIdentityProvider(t *testing.T) {
 	setup()
 	defer teardown()
 	setupTestIdentityProvider()
@@ -85,7 +85,7 @@ func TestGetIdentityProvider(t &testing.T) {
 	}
 	IdentityProviderTestJSONString := string(temp)
 
-	mux.HandleFunc("/idps/0oa62bfdiumsUndnZ0h7", func(w http.ResponseWriter, r &http.Request) {
+	mux.HandleFunc("/idps/0oa62bfdiumsUndnZ0h7", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testAuthHeader(t, r)
 		fmt.Fprint(w, IdentityProviderTestJSONString)
@@ -100,7 +100,7 @@ func TestGetIdentityProvider(t &testing.T) {
 	}
 }
 
-func TestIdentityProviderCreate(t &testing.T) {
+func TestIdentityProviderCreate(t *testing.T) {
 
 	setup()
 	defer teardown()
@@ -114,7 +114,7 @@ func TestIdentityProviderCreate(t &testing.T) {
 
 	IdentityProviderTestJSONString := string(temp)
 
-	mux.HandleFunc("/idps", func(w http.ResponseWriter, r &http.Request) {
+	mux.HandleFunc("/idps", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "POST")
 		testAuthHeader(t, r)
 		fmt.Fprint(w, IdentityProviderTestJSONString)
@@ -129,7 +129,7 @@ func TestIdentityProviderCreate(t &testing.T) {
 	}
 }
 
-func TestIdentityProviderUpdate(t &testing.T) {
+func TestIdentityProviderUpdate(t *testing.T) {
 
 	setup()
 	defer teardown()
@@ -143,7 +143,7 @@ func TestIdentityProviderUpdate(t &testing.T) {
 	}
 	updateTestJSONString := string(temp)
 
-	mux.HandleFunc("/idps/0oa62bfdiumsUndnZ0h7", func(w http.ResponseWriter, r &http.Request) {
+	mux.HandleFunc("/idps/0oa62bfdiumsUndnZ0h7", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "PUT")
 		testAuthHeader(t, r)
 		fmt.Fprint(w, updateTestJSONString)
@@ -158,7 +158,7 @@ func TestIdentityProviderUpdate(t &testing.T) {
 	}
 }
 
-func TestIdentityProviderDelete(t &testing.T) {
+func TestIdentityProviderDelete(t *testing.T) {
 
 	setup()
 	defer teardown()
@@ -166,7 +166,7 @@ func TestIdentityProviderDelete(t &testing.T) {
 
 	testIdentityProvider.ID = "0oa62bfdiumsUndnZ0h7"
 
-	mux.HandleFunc("/idps/0oa62bfdiumsUndnZ0h7", func(w http.ResponseWriter, r &http.Request) {
+	mux.HandleFunc("/idps/0oa62bfdiumsUndnZ0h7", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "DELETE")
 		testAuthHeader(t, r)
 		fmt.Fprint(w, "")
