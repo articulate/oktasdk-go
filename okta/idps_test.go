@@ -9,45 +9,71 @@ import (
 	"time"
 )
 
+var testAccountLink *AccountLink
+var testAuthorization *Authorization
+var testAuthorize *Authorize
+var testClient *Client
+var testClientRedirectUri *ClientRedirectUri
+var testCredentials *Credentials
+var testDeprovisioned *Deprovisioned
+var testHints *Hints
 var testIdentityProvider *IdentityProvider
+var testLinks *links
+var testPolicy *Policy
+var testProtocol *Protocol
+var testProvisioning *Provisioning
+var testSuspended *Suspended
+var testSubject *Subject
+var testToken *Token
+var testUserNameTemplate *UserNameTemplate
 
 func setupTestIdentityProvider() {
 	hmm, _ := time.Parse("2006-01-02T15:04:05.000Z", "2018-02-16T19:59:05.000Z")
 
-	testIdentityProvider = &IdentityProvider{
-		Type:        "GOOGLE",
-		Status:      "ACTIVE",
-		Name:        "Google",
-		Created:     hmm,
-		LastUpdated: hmm,
+  testAccountLink = &AccountLink {
+  	Action: "NONE",
+  	Filter: "NONE",
+  }
+
+  testPolicy = &Policy {
+    MaxClockSkew: 0,
+  }
+
+  testProvisioning = &Provisioning {
+  	Action: "NONE",
+  	ProfileMaster: false,
+  }
+
+  testSubject = &Subject {
+    Filter:    "NONE",
+    MatchType: "USERNAME",
+  }
+
+	testProtocol = &Protocol {
+		Type: "OIDC",
 	}
-	testIdentityProvider.Protocol.Type = "OIDC"
-	testIdentityProvider.Protocol.Endpoints.Authorization.Url = "https://accounts.google.com/o/oauth2/auth"
-	testIdentityProvider.Protocol.Endpoints.Authorization.Binding = "HTTP-REDIRECT"
-	testIdentityProvider.Protocol.Endpoints.Token.Url = "https://www.googleapis.com/oauth2/v3/token"
-	testIdentityProvider.Protocol.Endpoints.Token.Binding = "HTTP-POST"
-	testIdentityProvider.Protocol.Scopes = []string{"profile email openid"}
-	testIdentityProvider.Protocol.Credentials.Client.ClientID = "your-client-id"
-	testIdentityProvider.Protocol.Credentials.Client.ClientSecret = "your-client-secret"
-	testIdentityProvider.Policy.Provisioning.Action = "AUTO"
-	testIdentityProvider.Policy.Provisioning.ProfileMaster = true
-	testIdentityProvider.Policy.Provisioning.Groups.Action = "NONE"
-	testIdentityProvider.Policy.Provisioning.Conditions.Deprovisioned.Action = "NONE"
-	testIdentityProvider.Policy.Provisioning.Conditions.Suspended.Action = "NONE"
-	// testIdentityProvider.Policy.AccountLink.Filter = null
-	testIdentityProvider.Policy.AccountLink.Action = "AUTO"
-	testIdentityProvider.Policy.Subject.UserNameTemplate.Template = "idpuser.userPrincipalName"
-	// testIdentityProvider.Policy.Subject.Filter = null
-	testIdentityProvider.Policy.Subject.MatchType = "USERNAME"
-	testIdentityProvider.Policy.MaxClockSkew = 0
-	testIdentityProvider.Links.Authorize.Href = "https://{yourOktaDomain}/oauth2/v1/authorize?idp=0oa62bfdiumsUndnZ0h7&client_id={clientId}&response_type={responseType}&response_mode={responseMode}&scope={scopes}&redirect_uri={redirectUri}&state={state}"
-	testIdentityProvider.Links.Authorize.Templated = true
-	testIdentityProvider.Links.Authorize.Hints.Allow = []string{"GET"}
-	testIdentityProvider.Links.ClientRedirectUri.Href = "https://{yourOktaDomain}/oauth2/v1/authorize/callback"
-	testIdentityProvider.Links.ClientRedirectUri.Hints.Allow = []string{"POST"}
+
+	testProtocol.Scopes = []string{"profile email openid"}
+	testProtocol.Credentials.Client.ClientID = "your-client-id"
+	testProtocol.Credentials.Client.ClientSecret = "your-client-secret"
+	testProvisioning.Groups.Action = "NONE"
+	testProvisioning.Conditions.Deprovisioned.Action = "NONE"
+	testProvisioning.Conditions.Suspended.Action = "NONE"
+	testSubject.UserNameTemplate.Template = "idpuser.userPrincipalName"
+
+	testIdentityProvider = &IdentityProvider {
+		Type:        "GOOGLE",
+		Name:        "Google",
+	}
+
+	testIdentityProvider.Protocol = testProtocol
+	testIdentityProvider.Policy = testPolicy
+	testIdentityProvider.Policy.Provisioning = testProvisioning
+	testIdentityProvider.Policy.AccountLink = testAccountLink
+  testIdentityProvider.Policy.Subject = testSubject
 }
 
-func TestGetIdentityProvider(t *testing.T) {
+func TestGetIdentityProvider(t &testing.T) {
 	setup()
 	defer teardown()
 	setupTestIdentityProvider()
@@ -59,7 +85,7 @@ func TestGetIdentityProvider(t *testing.T) {
 	}
 	IdentityProviderTestJSONString := string(temp)
 
-	mux.HandleFunc("/idps/0oa62bfdiumsUndnZ0h7", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/idps/0oa62bfdiumsUndnZ0h7", func(w http.ResponseWriter, r &http.Request) {
 		testMethod(t, r, "GET")
 		testAuthHeader(t, r)
 		fmt.Fprint(w, IdentityProviderTestJSONString)
@@ -74,7 +100,7 @@ func TestGetIdentityProvider(t *testing.T) {
 	}
 }
 
-func TestIdentityProviderCreate(t *testing.T) {
+func TestIdentityProviderCreate(t &testing.T) {
 
 	setup()
 	defer teardown()
@@ -88,7 +114,7 @@ func TestIdentityProviderCreate(t *testing.T) {
 
 	IdentityProviderTestJSONString := string(temp)
 
-	mux.HandleFunc("/idps", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/idps", func(w http.ResponseWriter, r &http.Request) {
 		testMethod(t, r, "POST")
 		testAuthHeader(t, r)
 		fmt.Fprint(w, IdentityProviderTestJSONString)
@@ -103,7 +129,7 @@ func TestIdentityProviderCreate(t *testing.T) {
 	}
 }
 
-func TestIdentityProviderUpdate(t *testing.T) {
+func TestIdentityProviderUpdate(t &testing.T) {
 
 	setup()
 	defer teardown()
@@ -117,7 +143,7 @@ func TestIdentityProviderUpdate(t *testing.T) {
 	}
 	updateTestJSONString := string(temp)
 
-	mux.HandleFunc("/idps/0oa62bfdiumsUndnZ0h7", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/idps/0oa62bfdiumsUndnZ0h7", func(w http.ResponseWriter, r &http.Request) {
 		testMethod(t, r, "PUT")
 		testAuthHeader(t, r)
 		fmt.Fprint(w, updateTestJSONString)
@@ -132,7 +158,7 @@ func TestIdentityProviderUpdate(t *testing.T) {
 	}
 }
 
-func TestIdentityProviderDelete(t *testing.T) {
+func TestIdentityProviderDelete(t &testing.T) {
 
 	setup()
 	defer teardown()
@@ -140,7 +166,7 @@ func TestIdentityProviderDelete(t *testing.T) {
 
 	testIdentityProvider.ID = "0oa62bfdiumsUndnZ0h7"
 
-	mux.HandleFunc("/idps/0oa62bfdiumsUndnZ0h7", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/idps/0oa62bfdiumsUndnZ0h7", func(w http.ResponseWriter, r &http.Request) {
 		testMethod(t, r, "DELETE")
 		testAuthHeader(t, r)
 		fmt.Fprint(w, "")

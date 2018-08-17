@@ -11,6 +11,58 @@ func (p *IdentityProvidersService) IdentityProvider() IdentityProvider {
 	return IdentityProvider{}
 }
 
+type AccountLink struct {
+	Filter string `json:"filter,omitempty"`
+	Action string `json:"action,omitempty"`
+}
+
+type Authorization struct {
+	Url     string `json:"url,omitempty"`
+	Binding string `json:"binding,omitempty"`
+}
+
+type Authorize struct {
+	Href      string `json:"href,omitempty"`
+	Templated bool   `json:"templated,omitempty"`
+	Hints     *Hints `json:"hints,omitempty"`
+}
+
+type Client struct {
+	ClientID     string `json:"client_id,omitempty"`
+	ClientSecret string `json:"client_secret,omitempty"`
+}
+
+type ClientRedirectUri struct {
+	Href  string `json:"href,omitempty"`
+	Hints *Hints `json:"hints,omitempty"`
+}
+
+type Conditions struct {
+	Deprovisioned *Deprovisioned `json:"deprovisioned,omitempty"`
+	Suspended     *Suspended     `json:"suspended,omitempty"`
+}
+
+type Credentials struct {
+	Client *Client `json:"client,omitempty"`
+}
+
+type Deprovisioned struct {
+	Action string `json:"action,omitempty"`
+}
+
+type Endpoints struct {
+	Authorization *Authorization `json:"authorization,omitempty"`
+	Token         *Token         `json:"token,omitempty"`
+}
+
+type Groups struct {
+	Action string `json:"action,omitempty"`
+}
+
+type Hints struct {
+	Allow []string `json:"allow,omitempty"`
+}
+
 type IdentityProvider struct {
 	ID          string    `json:"id,omitempty"`
 	Type        string    `json:"type,omitempty"`
@@ -18,70 +70,54 @@ type IdentityProvider struct {
 	Name        string    `json:"name,omitempty"`
 	Created     time.Time `json:"created,omitempty"`
 	LastUpdated time.Time `json:"lastUpdated,omitempty"`
-	Protocol    struct {
-		Type      string `json:"type,omitempty"`
-		Endpoints struct {
-			Authorization struct {
-				Url     string `json:"url,omitempty"`
-				Binding string `json:"binding,omitempty"`
-			} `json:"authorization,omitempty"`
-			Token struct {
-				Url     string `json:"url,omitempty"`
-				Binding string `json:"binding,omitempty"`
-			}
-		} `json:"endpoints,omitempty"`
-		Scopes      []string `json:"scopes,omitempty"`
-		Credentials struct {
-			Client struct {
-				ClientID     string `json:"client_id,omitempty"`
-				ClientSecret string `json:"client_secret,omitempty"`
-			} `json:"client,omitempty"`
-		} `json:"credentials,omitempty"`
-	} `json:"protocol,omitempty"`
-	Policy struct {
-		Provisioning struct {
-			Action        string `json:"action,omitempty"`
-			ProfileMaster bool   `json:"profileMaster,omitempty"`
-			Groups        struct {
-				Action string `json:"action,omitempty"`
-			} `json:"groups,omitempty"`
-			Conditions struct {
-				Deprovisioned struct {
-					Action string `json:"action,omitempty"`
-				} `json:"deprovisioned,omitempty"`
-				Suspended struct {
-					Action string `json:"action,omitempty"`
-				} `json:"suspended,omitempty"`
-			} `json:"conditions,omitempty"`
-		} `json:"provisioning,omitempty"`
-		AccountLink struct {
-			Filter string `json:"filter,omitempty"`
-			Action string `json:"action,omitempty"`
-		} `json:"accountLink,omitempty"`
-		Subject struct {
-			UserNameTemplate struct {
-				Template string `json:"template,omitempty"`
-			} `json:"userNameTemplate,omitempty"`
-			Filter    string `json:"filter,omitempty"`
-			MatchType string `json:"matchType,omitempty"`
-		} `json:"subject,omitempty"`
-		MaxClockSkew int `json:"maxClockSkew,omitempty"`
-	} `json:"policy,omitempty"`
-	Links struct {
-		Authorize struct {
-			Href      string `json:"href,omitempty"`
-			Templated bool   `json:"templated,omitempty"`
-			Hints     struct {
-				Allow []string `json:"allow,omitempty"`
-			} `json:"hints,omitempty"`
-		} `json:"authorize,omitempty"`
-		ClientRedirectUri struct {
-			Href  string `json:"href,omitempty"`
-			Hints struct {
-				Allow []string `json:"allow,omitempty"`
-			} `json:"hints,omitempty"`
-		} `json:"clientRedirectUri,omitempty"`
-	} `json:"_links,omitempty"`
+	Protocol    *Protocol `json:"protocol,omitempty"`
+	Policy      *Policy   `json:"policy,omitempty"`
+	Links       *Links    `json:"_links,omitempty"`
+}
+
+type Links struct {
+	Authorize         *Authorize         `json:"authorize,omitempty"`
+	ClientRedirectUri *ClientRedirectUri `json:"clientRedirectUri,omitempty"`
+}
+
+type Policy struct {
+	Provisioning *Provisioning `json:"provisioning,omitempty"`
+	AccountLink  *AccountLink  `json:"accountLink,omitempty"`
+	Subject      *Subject      `json:"subject,omitempty"`
+	MaxClockSkew int           `json:"maxClockSkew,omitempty"`
+}
+
+type Protocol struct {
+	Type        string       `json:"type,omitempty"`
+	Endpoints   *Endpoints   `json:"endpoints,omitempty"`
+	Scopes      []string     `json:"scopes,omitempty"`
+	Credentials *Credentials `json:"credentials,omitempty"`
+}
+
+type Provisioning struct {
+	Action        string      `json:"action,omitempty"`
+	ProfileMaster bool        `json:"profileMaster,omitempty"`
+	Groups        *Groups     `json:"groups,omitempty"`
+	Conditions    *Conditions `json:"conditions,omitempty"`
+}
+
+type Suspended struct {
+	Action string `json:"action,omitempty"`
+}
+
+type Subject struct {
+	UserNameTemplate *UserNameTemplate `json:"userNameTemplate,omitempty"`
+	Filter           string            `json:"filter,omitempty"`
+	MatchType        string            `json:"matchType,omitempty"`
+}
+
+type Token struct {
+	Url     string `json:"url,omitempty"`
+	Binding string `json:"binding,omitempty"`
+}
+
+type UserNameTemplate struct {
+	Template string `json:"template,omitempty"`
 }
 
 // GetIdentityProvider: Get an IdP
@@ -107,6 +143,7 @@ func (p *IdentityProvidersService) GetIdentityProvider(id string) (*IdentityProv
 func (p *IdentityProvidersService) CreateIdentityProvider(idp interface{}) (*IdentityProvider, *Response, error) {
 	u := fmt.Sprintf("idps")
 	req, err := p.client.NewRequest("POST", u, idp)
+
 	if err != nil {
 		return nil, nil, err
 	}
