@@ -6,51 +6,63 @@ import (
 	"net/http"
 	"reflect"
 	"testing"
-	"time"
 )
 
 var testAccountLink *AccountLink
-var testAuthorization *Authorization
-var testAuthorize *Authorize
-var testClient *Client
-var testClientRedirectUri *ClientRedirectUri
+var testClient *IdpClient
+var testConditions *Conditions
 var testCredentials *Credentials
 var testDeprovisioned *Deprovisioned
-var testHints *Hints
+var testGroups *IdpGroups
 var testIdentityProvider *IdentityProvider
-var testLinks *links
-var testPolicy *Policy
+var testIdpPolicy *IdpPolicy
 var testProtocol *Protocol
 var testProvisioning *Provisioning
-var testSuspended *Suspended
 var testSubject *Subject
-var testToken *Token
+var testSuspended *Suspended
 var testUserNameTemplate *UserNameTemplate
 
 func setupTestIdentityProvider() {
-	hmm, _ := time.Parse("2006-01-02T15:04:05.000Z", "2018-02-16T19:59:05.000Z")
+	testClient = &IdpClient{}
+	testDeprovisioned = &Deprovisioned{}
+	testGroups = &IdpGroups{}
+	testSuspended = &Suspended{}
+	testUserNameTemplate = &UserNameTemplate{}
 
 	testAccountLink = &AccountLink{
 		Action: "NONE",
 		Filter: "NONE",
 	}
 
-	testPolicy = &Policy{
+	testConditions = &Conditions{
+		Deprovisioned: testDeprovisioned,
+		Suspended:     testSuspended,
+	}
+
+	testCredentials = &Credentials{
+		Client: testClient,
+	}
+
+	testIdpPolicy = &IdpPolicy{
 		MaxClockSkew: 0,
+	}
+
+	testProtocol = &Protocol{
+		Credentials: testCredentials,
+		Type:        "OIDC",
 	}
 
 	testProvisioning = &Provisioning{
 		Action:        "NONE",
+		Conditions:    testConditions,
+		Groups:        testGroups,
 		ProfileMaster: false,
 	}
 
 	testSubject = &Subject{
-		Filter:    "NONE",
-		MatchType: "USERNAME",
-	}
-
-	testProtocol = &Protocol{
-		Type: "OIDC",
+		Filter:           "NONE",
+		MatchType:        "USERNAME",
+		UserNameTemplate: testUserNameTemplate,
 	}
 
 	testProtocol.Scopes = []string{"profile email openid"}
@@ -67,7 +79,7 @@ func setupTestIdentityProvider() {
 	}
 
 	testIdentityProvider.Protocol = testProtocol
-	testIdentityProvider.Policy = testPolicy
+	testIdentityProvider.Policy = testIdpPolicy
 	testIdentityProvider.Policy.Provisioning = testProvisioning
 	testIdentityProvider.Policy.AccountLink = testAccountLink
 	testIdentityProvider.Policy.Subject = testSubject

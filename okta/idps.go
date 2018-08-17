@@ -27,7 +27,7 @@ type Authorize struct {
 	Hints     *Hints `json:"hints,omitempty"`
 }
 
-type Client struct {
+type IdpClient struct {
 	ClientID     string `json:"client_id,omitempty"`
 	ClientSecret string `json:"client_secret,omitempty"`
 }
@@ -43,7 +43,7 @@ type Conditions struct {
 }
 
 type Credentials struct {
-	Client *Client `json:"client,omitempty"`
+	Client *IdpClient `json:"client,omitempty"`
 }
 
 type Deprovisioned struct {
@@ -55,7 +55,7 @@ type Endpoints struct {
 	Token         *Token         `json:"token,omitempty"`
 }
 
-type Groups struct {
+type IdpGroups struct {
 	Action string `json:"action,omitempty"`
 }
 
@@ -64,23 +64,23 @@ type Hints struct {
 }
 
 type IdentityProvider struct {
-	ID          string    `json:"id,omitempty"`
-	Type        string    `json:"type,omitempty"`
-	Status      string    `json:"status,omitempty"`
-	Name        string    `json:"name,omitempty"`
-	Created     time.Time `json:"created,omitempty"`
-	LastUpdated time.Time `json:"lastUpdated,omitempty"`
-	Protocol    *Protocol `json:"protocol,omitempty"`
-	Policy      *Policy   `json:"policy,omitempty"`
-	Links       *Links    `json:"_links,omitempty"`
+	ID          string     `json:"id,omitempty"`
+	Type        string     `json:"type,omitempty"`
+	Status      string     `json:"status,omitempty"`
+	Name        string     `json:"name,omitempty"`
+	Created     time.Time  `json:"created,omitempty"`
+	LastUpdated time.Time  `json:"lastUpdated,omitempty"`
+	Protocol    *Protocol  `json:"protocol,omitempty"`
+	Policy      *IdpPolicy `json:"policy,omitempty"`
+	Links       *IdpLinks  `json:"_links,omitempty"`
 }
 
-type Links struct {
+type IdpLinks struct {
 	Authorize         *Authorize         `json:"authorize,omitempty"`
 	ClientRedirectUri *ClientRedirectUri `json:"clientRedirectUri,omitempty"`
 }
 
-type Policy struct {
+type IdpPolicy struct {
 	Provisioning *Provisioning `json:"provisioning,omitempty"`
 	AccountLink  *AccountLink  `json:"accountLink,omitempty"`
 	Subject      *Subject      `json:"subject,omitempty"`
@@ -97,7 +97,7 @@ type Protocol struct {
 type Provisioning struct {
 	Action        string      `json:"action,omitempty"`
 	ProfileMaster bool        `json:"profileMaster,omitempty"`
-	Groups        *Groups     `json:"groups,omitempty"`
+	Groups        *IdpGroups  `json:"groups,omitempty"`
 	Conditions    *Conditions `json:"conditions,omitempty"`
 }
 
