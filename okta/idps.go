@@ -63,16 +63,18 @@ type Hints struct {
 	Allow []string `json:"allow,omitempty"`
 }
 
+// Note - time.Time fields are pointers due to the issue described at link below
+// https://stackoverflow.com/questions/32643815/golang-json-omitempty-with-time-time-field
 type IdentityProvider struct {
-	ID          string     `json:"id,omitempty"`
-	Type        string     `json:"type,omitempty"`
-	Status      string     `json:"status,omitempty"`
-	Name        string     `json:"name,omitempty"`
-	Created     time.Time  `json:"created,omitempty"`
-	LastUpdated time.Time  `json:"lastUpdated,omitempty"`
-	Protocol    *Protocol  `json:"protocol,omitempty"`
-	Policy      *IdpPolicy `json:"policy,omitempty"`
-	Links       *IdpLinks  `json:"_links,omitempty"`
+	ID          string	`json:"id,omitempty"`
+	Type        string	`json:"type,omitempty"`
+	Status      string	`json:"status,omitempty"`
+	Name        string	`json:"name,omitempty"`
+	Created     *time.Time  `json:"created,omitempty"`
+	LastUpdated *time.Time  `json:"lastUpdated,omitempty"`
+	Protocol    *Protocol	`json:"protocol,omitempty"`
+	Policy      *IdpPolicy	`json:"policy,omitempty"`
+	Links       *IdpLinks	`json:"_links,omitempty"`
 }
 
 type IdpLinks struct {
@@ -149,6 +151,7 @@ func (p *IdentityProvidersService) CreateIdentityProvider(idp interface{}) (*Ide
 	}
 
 	newIdp := new(IdentityProvider)
+
 	resp, err := p.client.Do(req, newIdp)
 	if err != nil {
 		return nil, resp, err
