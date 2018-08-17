@@ -498,8 +498,8 @@ func (c *Client) NewRequest(method, urlStr string, body interface{}) (*http.Requ
 
 	req, err := http.NewRequest(method, u.String(), buf)
 
-	req, _ := httputil.RequestDump(req, true);
-	strang := string(req[:])
+	dump, _ := httputil.DumpRequest(req, true);
+	strang := string(dump[:])
 	fmt.Println(strang)
 
 	if err != nil {
