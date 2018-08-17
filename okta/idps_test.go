@@ -6,45 +6,83 @@ import (
 	"net/http"
 	"reflect"
 	"testing"
-	"time"
 )
 
+var testAccountLink *AccountLink
+var testClient *IdpClient
+var testConditions *Conditions
+var testCredentials *Credentials
+var testDeprovisioned *Deprovisioned
+var testGroups *IdpGroups
 var testIdentityProvider *IdentityProvider
+var testIdpPolicy *IdpPolicy
+var testProtocol *Protocol
+var testProvisioning *Provisioning
+var testSubject *Subject
+var testSuspended *Suspended
+var testUserNameTemplate *UserNameTemplate
 
 func setupTestIdentityProvider() {
-	hmm, _ := time.Parse("2006-01-02T15:04:05.000Z", "2018-02-16T19:59:05.000Z")
+	testClient = &IdpClient{}
+	testDeprovisioned = &Deprovisioned{}
+	testGroups = &IdpGroups{}
+	testSuspended = &Suspended{}
+	testUserNameTemplate = &UserNameTemplate{}
+
+	testAccountLink = &AccountLink{
+		Action: "NONE",
+		Filter: "NONE",
+	}
+
+	testConditions = &Conditions{
+		Deprovisioned: testDeprovisioned,
+		Suspended:     testSuspended,
+	}
+
+	testCredentials = &Credentials{
+		Client: testClient,
+	}
+
+	testIdpPolicy = &IdpPolicy{
+		MaxClockSkew: 0,
+	}
+
+	testProtocol = &Protocol{
+		Credentials: testCredentials,
+		Type:        "OIDC",
+	}
+
+	testProvisioning = &Provisioning{
+		Action:        "NONE",
+		Conditions:    testConditions,
+		Groups:        testGroups,
+		ProfileMaster: false,
+	}
+
+	testSubject = &Subject{
+		Filter:           "NONE",
+		MatchType:        "USERNAME",
+		UserNameTemplate: testUserNameTemplate,
+	}
+
+	testProtocol.Scopes = []string{"profile email openid"}
+	testProtocol.Credentials.Client.ClientID = "your-client-id"
+	testProtocol.Credentials.Client.ClientSecret = "your-client-secret"
+	testProvisioning.Groups.Action = "NONE"
+	testProvisioning.Conditions.Deprovisioned.Action = "NONE"
+	testProvisioning.Conditions.Suspended.Action = "NONE"
+	testSubject.UserNameTemplate.Template = "idpuser.userPrincipalName"
 
 	testIdentityProvider = &IdentityProvider{
-		Type:        "GOOGLE",
-		Status:      "ACTIVE",
-		Name:        "Google",
-		Created:     hmm,
-		LastUpdated: hmm,
+		Type: "GOOGLE",
+		Name: "Google",
 	}
-	testIdentityProvider.Protocol.Type = "OIDC"
-	testIdentityProvider.Protocol.Endpoints.Authorization.Url = "https://accounts.google.com/o/oauth2/auth"
-	testIdentityProvider.Protocol.Endpoints.Authorization.Binding = "HTTP-REDIRECT"
-	testIdentityProvider.Protocol.Endpoints.Token.Url = "https://www.googleapis.com/oauth2/v3/token"
-	testIdentityProvider.Protocol.Endpoints.Token.Binding = "HTTP-POST"
-	testIdentityProvider.Protocol.Scopes = []string{"profile email openid"}
-	testIdentityProvider.Protocol.Credentials.Client.ClientID = "your-client-id"
-	testIdentityProvider.Protocol.Credentials.Client.ClientSecret = "your-client-secret"
-	testIdentityProvider.Policy.Provisioning.Action = "AUTO"
-	testIdentityProvider.Policy.Provisioning.ProfileMaster = true
-	testIdentityProvider.Policy.Provisioning.Groups.Action = "NONE"
-	testIdentityProvider.Policy.Provisioning.Conditions.Deprovisioned.Action = "NONE"
-	testIdentityProvider.Policy.Provisioning.Conditions.Suspended.Action = "NONE"
-	// testIdentityProvider.Policy.AccountLink.Filter = null
-	testIdentityProvider.Policy.AccountLink.Action = "AUTO"
-	testIdentityProvider.Policy.Subject.UserNameTemplate.Template = "idpuser.userPrincipalName"
-	// testIdentityProvider.Policy.Subject.Filter = null
-	testIdentityProvider.Policy.Subject.MatchType = "USERNAME"
-	testIdentityProvider.Policy.MaxClockSkew = 0
-	testIdentityProvider.Links.Authorize.Href = "https://{yourOktaDomain}/oauth2/v1/authorize?idp=0oa62bfdiumsUndnZ0h7&client_id={clientId}&response_type={responseType}&response_mode={responseMode}&scope={scopes}&redirect_uri={redirectUri}&state={state}"
-	testIdentityProvider.Links.Authorize.Templated = true
-	testIdentityProvider.Links.Authorize.Hints.Allow = []string{"GET"}
-	testIdentityProvider.Links.ClientRedirectUri.Href = "https://{yourOktaDomain}/oauth2/v1/authorize/callback"
-	testIdentityProvider.Links.ClientRedirectUri.Hints.Allow = []string{"POST"}
+
+	testIdentityProvider.Protocol = testProtocol
+	testIdentityProvider.Policy = testIdpPolicy
+	testIdentityProvider.Policy.Provisioning = testProvisioning
+	testIdentityProvider.Policy.AccountLink = testAccountLink
+	testIdentityProvider.Policy.Subject = testSubject
 }
 
 func TestGetIdentityProvider(t *testing.T) {
