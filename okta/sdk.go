@@ -7,15 +7,12 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
-	"net/http/httputil"
 	"net/url"
 	"regexp"
 	"strconv"
 	"sync"
 	"time"
-
 	"github.com/google/go-querystring/query"
-
 	"reflect"
 )
 
@@ -497,10 +494,6 @@ func (c *Client) NewRequest(method, urlStr string, body interface{}) (*http.Requ
 	}
 
 	req, err := http.NewRequest(method, u.String(), buf)
-
-	dump, _ := httputil.DumpRequest(req, true);
-	strang := string(dump[:])
-	fmt.Println(strang)
 
 	if err != nil {
 		return nil, err
