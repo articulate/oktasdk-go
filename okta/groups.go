@@ -332,3 +332,20 @@ type GroupUserFilterOptions struct {
 	GetAllPages   bool     `url:"-"`
 	NumberOfPages int      `url:"-"`
 }
+
+// UpdateGroup: Update a group
+func (p *GroupsService) Update(id string, group interface{}) (*Group, *Response, error) {
+	u := fmt.Sprintf("groups/%v", id)
+	req, err := p.client.NewRequest("PUT", u, group)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	updateGroup := new(Group)
+	resp, err := p.client.Do(req, updateGroup)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return updateGroup, resp, err
+}
