@@ -25,35 +25,39 @@ const (
 // methods of the OKTA API.
 type GroupsService service
 
+type GroupProfile struct {
+	Name                       string `json:"name"`
+	Description                string `json:"description"`
+	SamAccountName             string `json:"samAccountName,omitempty"`
+	Dn                         string `json:"dn,omitempty"`
+	WindowsDomainQualifiedName string `json:"windowsDomainQualifiedName,omitempty"`
+	ExternalID                 string `json:"externalId,omitempty"`
+}
+
+type GroupLinks struct {
+	Logo []struct {
+		Name string `json:"name"`
+		Href string `json:"href"`
+		Type string `json:"type"`
+	} `json:"logo"`
+	Users struct {
+		Href string `json:"href"`
+	} `json:"users"`
+	Apps struct {
+		Href string `json:"href"`
+	} `json:"apps"`
+}
+
 // Group represents the Group Object from the OKTA API
 type Group struct {
-	ID                    string    `json:"id"`
-	Created               time.Time `json:"created"`
-	LastUpdated           time.Time `json:"lastUpdated"`
-	LastMembershipUpdated time.Time `json:"lastMembershipUpdated"`
-	ObjectClass           []string  `json:"objectClass"`
-	Type                  string    `json:"type"`
-	Profile               struct {
-		Name                       string `json:"name"`
-		Description                string `json:"description"`
-		SamAccountName             string `json:"samAccountName"`
-		Dn                         string `json:"dn"`
-		WindowsDomainQualifiedName string `json:"windowsDomainQualifiedName"`
-		ExternalID                 string `json:"externalId"`
-	} `json:"profile"`
-	Links struct {
-		Logo []struct {
-			Name string `json:"name"`
-			Href string `json:"href"`
-			Type string `json:"type"`
-		} `json:"logo"`
-		Users struct {
-			Href string `json:"href"`
-		} `json:"users"`
-		Apps struct {
-			Href string `json:"href"`
-		} `json:"apps"`
-	} `json:"_links"`
+	ID                    string        `json:"id"`
+	Created               time.Time     `json:"created"`
+	LastUpdated           time.Time     `json:"lastUpdated"`
+	LastMembershipUpdated time.Time     `json:"lastMembershipUpdated"`
+	ObjectClass           []string      `json:"objectClass"`
+	Type                  string        `json:"type"`
+	GroupProfile          *GroupProfile `json:"profile"`
+	GroupLinks            *GroupLinks   `json:"_links"`
 }
 
 type groups struct {
@@ -271,9 +275,12 @@ func (g *GroupsService) Add(groupName string, groupDescription string) (*Group, 
 		return nil, nil, errors.New("groupName parameter is required for ADD")
 	}
 
-	newGroup := newGroup{}
-	newGroup.Profile.Name = groupName
-	newGroup.Profile.Description = groupDescription
+	newGroup := Group{
+		GroupProfile: &GroupProfile{},
+	}
+
+	newGroup.GroupProfile.Name = groupName
+	newGroup.GroupProfile.Description = groupDescription
 
 	u := fmt.Sprintf("groups")
 
@@ -294,7 +301,7 @@ func (g *GroupsService) Add(groupName string, groupDescription string) (*Group, 
 	return group, resp, err
 }
 
-// Delete - Delets an OKTA Mastered Group with ID
+// Delete - Deletes an OKTA Mastered Group with ID
 func (g *GroupsService) Delete(groupID string) (*Response, error) {
 
 	if groupID == "" {
@@ -324,11 +331,4 @@ type GroupUserFilterOptions struct {
 	NextURL       *url.URL `url:"-"`
 	GetAllPages   bool     `url:"-"`
 	NumberOfPages int      `url:"-"`
-}
-
-type newGroup struct {
-	Profile struct {
-		Name        string `json:"name"`
-		Description string `json:"description"`
-	} `json:"profile"`
 }
