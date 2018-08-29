@@ -16,10 +16,10 @@ func setupTestGroup() {
 	testGroupLinks = &GroupLinks{}
 
 	testGroup = &Group{
-		GroupLinks:        testGroupLinks,
+		GroupLinks: testGroupLinks,
 		GroupProfile: &GroupProfile{
-			Name:         "testGroup",
-			Description:  "testGroupDescription",
+			Name:        "testGroup",
+			Description: "testGroupDescription",
 		},
 	}
 }
