@@ -17,14 +17,13 @@ var testSignonPolicy *Policy
 var testPassPolicies *PolicyCollection
 var testSignonPolicies *PolicyCollection
 
-var testInputPassRule *PasswordRule
-var testInputSignonRule *SignOnRule
+var testInputPassRule *Rule
+var testInputSignonRule *Rule
 var testPassRule *Rule
 var testSignonRule *Rule
 
 var testPassRules *rules
 var testSignonRules *rules
-
 
 func setupPassPolicy() {
 	hmm, _ := time.Parse("2006-01-02T15:04:05.000Z", "2018-02-16T19:59:05.000Z")
@@ -45,18 +44,16 @@ func setupPassPolicy() {
 
 	testPassPolicyPeople := &People{
 		Groups: testPassPolicyGroups,
-		Users: testPassPolicyUsers,
+		Users:  testPassPolicyUsers,
 	}
-	
+
 	testPassPolicyConditions := &PolicyConditions{
 		People: testPassPolicyPeople,
 	}
 
-	testPassPolicyRecovery := &Recovery{
-	}
+	testPassPolicyRecovery := &Recovery{}
 
-	testPassPolicyPassword := &Password{
-	}
+	testPassPolicyPassword := &Password{}
 	testPassPolicyPassword.Complexity.MinLength = 12
 	testPassPolicyPassword.Age.HistoryCount = 5
 
@@ -75,11 +72,11 @@ func setupPassPolicy() {
 		Status:      "ACTIVE",
 		Created:     hmm,
 		LastUpdated: hmm,
-		Conditions: testPassPolicyConditions,
-		Settings: testPassPolicySettings,
-		Links: testPassPolicyLinks,
+		Conditions:  testPassPolicyConditions,
+		Settings:    testPassPolicySettings,
+		Links:       testPassPolicyLinks,
 	}
-	
+
 	testPassPolicy.Settings.Recovery.Factors.OktaEmail.Status = "ACTIVE"
 	testPassPolicy.Settings.Recovery.Factors.RecoveryQuestion.Status = "ACTIVE"
 }
@@ -96,16 +93,14 @@ func setupSignonPolicy() {
 	testSignonPolicyPeople := &People{
 		Groups: testSignonPolicyGroups,
 	}
-	
+
 	testSignonPolicyConditions := &PolicyConditions{
 		People: testSignonPolicyPeople,
 	}
 
-	testSignonPolicyRecovery := &Recovery{
-	}
+	testSignonPolicyRecovery := &Recovery{}
 
-	testSignonPolicyPassword := &Password{
-	}
+	testSignonPolicyPassword := &Password{}
 	testSignonPolicyPassword.Complexity.MinLength = 12
 	testSignonPolicyPassword.Age.HistoryCount = 5
 
@@ -113,7 +108,7 @@ func setupSignonPolicy() {
 		Recovery: testSignonPolicyRecovery,
 		Password: testSignonPolicyPassword,
 	}
-	
+
 	testSignonPolicy = &Policy{
 		ID:          "00pedv3qclXeC2aFH0h7",
 		Type:        "OKTA_SIGN_ON",
@@ -124,9 +119,9 @@ func setupSignonPolicy() {
 		Status:      "ACTIVE",
 		Created:     hmm,
 		LastUpdated: hmm,
-		Conditions: testSignonPolicyConditions,
-		Settings: testSignonPolicySettings,
-		Links: testSignonPolicyLinks,
+		Conditions:  testSignonPolicyConditions,
+		Settings:    testSignonPolicySettings,
+		Links:       testSignonPolicyLinks,
 	}
 
 	testSignonPolicy.Conditions.People.Groups.Include = []string{"00ge0t33mvT5q62O40h7"}
@@ -149,16 +144,14 @@ func setupInputPassPolicy() {
 	testInputPassPolicyPeople := &People{
 		Groups: testInputPassPolicyGroups,
 	}
-	
+
 	testInputPassPolicyConditions := &PolicyConditions{
 		People: testInputPassPolicyPeople,
 	}
 
-	testInputPassPolicyRecovery := &Recovery{
-	}
+	testInputPassPolicyRecovery := &Recovery{}
 
-	testInputPassPolicyPassword := &Password{
-	}
+	testInputPassPolicyPassword := &Password{}
 	testInputPassPolicyPassword.Complexity.MinLength = 12
 	testInputPassPolicyPassword.Age.HistoryCount = 5
 
@@ -166,16 +159,16 @@ func setupInputPassPolicy() {
 		Recovery: testInputPassPolicyRecovery,
 		Password: testInputPassPolicyPassword,
 	}
-	
+
 	testInputPassPolicy = &Policy{
 		Type:        "PASSWORD",
 		Name:        "PasswordPolicy",
 		Description: "Unit Test Password Policy",
 		Priority:    2,
 		Status:      "ACTIVE",
-		Conditions: testInputPassPolicyConditions,
-		Settings: testInputPassPolicySettings,
-		Links: testInputPassPolicyLinks,
+		Conditions:  testInputPassPolicyConditions,
+		Settings:    testInputPassPolicySettings,
+		Links:       testInputPassPolicyLinks,
 	}
 
 }
@@ -190,16 +183,14 @@ func setupInputSignonPolicy() {
 	testInputSignonPolicyPeople := &People{
 		Groups: testInputSignonPolicyGroups,
 	}
-	
+
 	testInputSignonPolicyConditions := &PolicyConditions{
 		People: testInputSignonPolicyPeople,
 	}
 
-	testInputSignonPolicyRecovery := &Recovery{
-	}
+	testInputSignonPolicyRecovery := &Recovery{}
 
-	testInputSignonPolicyPassword := &Password{
-	}
+	testInputSignonPolicyPassword := &Password{}
 	testInputSignonPolicyPassword.Complexity.MinLength = 12
 	testInputSignonPolicyPassword.Age.HistoryCount = 5
 
@@ -207,16 +198,16 @@ func setupInputSignonPolicy() {
 		Recovery: testInputSignonPolicyRecovery,
 		Password: testInputSignonPolicyPassword,
 	}
-	
+
 	testInputSignonPolicy = &Policy{
 		Type:        "PASSWORD",
 		Name:        "PasswordPolicy",
 		Description: "Unit Test Password Policy",
 		Priority:    2,
 		Status:      "ACTIVE",
-		Conditions: testInputSignonPolicyConditions,
-		Settings: testInputSignonPolicySettings,
-		Links: testInputSignonPolicyLinks,
+		Conditions:  testInputSignonPolicyConditions,
+		Settings:    testInputSignonPolicySettings,
+		Links:       testInputSignonPolicyLinks,
 	}
 
 	testInputSignonPolicy.Conditions.People.Groups.Include = []string{"00ge0t33mvT5q62O40h7"}
@@ -251,8 +242,16 @@ func setupTestRules() {
 		System:      false,
 		Created:     hmm,
 		LastUpdated: hmm,
+		Conditions: &PolicyConditions{
+			People: &People{
+				Users: &Users{},
+			},
+			Network: &Network{},
+		},
+		Links: &PolicyLinks{},
 	}
 	testPassPolicy.Conditions.People.Users.Exclude = []string{"00ge0t33mvT5q62O40h7"}
+
 	testPassRule.Conditions.Network.Connection = "ANYWHERE"
 	testPassRule.Actions.PasswordChange.Access = "ALLOW"
 	testPassRule.Actions.SelfServicePasswordReset.Access = "ALLOW"
@@ -265,12 +264,20 @@ func setupTestRules() {
 	testPassRule.Links.Rules.Hints.Allow = []string{"GET POST"}
 
 	// input password rule
-	testInputPassRule = &PasswordRule{
+	testInputPassRule = &Rule{
 		Type:     "PASSWORD",
 		Status:   "ACTIVE",
 		Name:     "PasswordRule",
 		Priority: 2,
+		Conditions: &PolicyConditions{
+			People: &People{
+				Users: &Users{},
+			},
+			Network: &Network{},
+		},
+		Links: &PolicyLinks{},
 	}
+
 	testPassPolicy.Conditions.People.Users.Exclude = []string{"00ge0t33mvT5q62O40h7"}
 	testInputPassRule.Conditions.Network.Connection = "ANYWHERE"
 	testInputPassRule.Actions.PasswordChange.Access = "ALLOW"
@@ -287,6 +294,13 @@ func setupTestRules() {
 		System:      false,
 		Created:     hmm,
 		LastUpdated: hmm,
+		Conditions: &PolicyConditions{
+			People: &People{
+				Users: &Users{},
+			},
+			Network: &Network{},
+		},
+		Links: &PolicyLinks{},
 	}
 	testPassPolicy.Conditions.People.Users.Exclude = []string{"00ge0t33mvT5q62O40h7"}
 	testSignonRule.Conditions.Network.Connection = "ANYWHERE"
@@ -300,11 +314,18 @@ func setupTestRules() {
 	testSignonRule.Links.Rules.Hints.Allow = []string{"GET POST"}
 
 	// input signon rule
-	testInputSignonRule = &SignOnRule{
+	testInputSignonRule = &Rule{
 		Type:     "OKTA_SIGN_ON",
 		Status:   "ACTIVE",
 		Name:     "SignOnRule",
 		Priority: 2,
+		Conditions: &PolicyConditions{
+			People: &People{
+				Users: &Users{},
+			},
+			Network: &Network{},
+		},
+		Links: &PolicyLinks{},
 	}
 	testPassPolicy.Conditions.People.Users.Exclude = []string{"00ge0t33mvT5q62O40h7"}
 	testInputSignonRule.Conditions.Network.Connection = "ANYWHERE"
@@ -360,7 +381,7 @@ func TestGetRule(t *testing.T) {
 	}
 	ruleTestJSONString := string(temp)
 
-	mux.HandleFunc("/policies/00pedv3qclXeC2aFH0h7rules/0predz80vvMTwva7T0h7", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/policies/00pedv3qclXeC2aFH0h7/rules/0predz80vvMTwva7T0h7", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testAuthHeader(t, r)
 		fmt.Fprint(w, ruleTestJSONString)

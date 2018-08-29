@@ -16,24 +16,24 @@ type PolicyGroups struct {
 // Policy represents the complete Policy Object from the OKTA API
 // used to return policy data from a GET request
 type Policy struct {
-	ID          string    `json:"id,omitempty"`
-	Type        string    `json:"type,omitempty"`
-	Name        string    `json:"name,omitempty"`
-	System      bool      `json:"system,omitempty"`
-	Description string    `json:"description,omitempty"`
-	Priority    int       `json:"priority,omitempty"`
-	Status      string    `json:"status,omitempty"`
-	Created     time.Time `json:"created,omitempty"`
-	LastUpdated time.Time `json:"lastUpdated,omitempty"`
+	ID          string            `json:"id,omitempty"`
+	Type        string            `json:"type,omitempty"`
+	Name        string            `json:"name,omitempty"`
+	System      bool              `json:"system,omitempty"`
+	Description string            `json:"description,omitempty"`
+	Priority    int               `json:"priority,omitempty"`
+	Status      string            `json:"status,omitempty"`
+	Created     time.Time         `json:"created,omitempty"`
+	LastUpdated time.Time         `json:"lastUpdated,omitempty"`
 	Conditions  *PolicyConditions `json:"conditions,omitempty"`
-	Settings *PolicySettings `json:"settings,omitempty"`
-	Links *PolicyLinks `json:"_links,omitempty"`
+	Settings    *PolicySettings   `json:"settings,omitempty"`
+	Links       *PolicyLinks      `json:"_links,omitempty"`
 }
 
 type PolicySettings struct {
-	Factors *Factors    `json:"factors,omitempty"`
-	Password *Password   `json:"password,omitempty"`
-	Recovery *Recovery  `json:"recovery,omitempty"`
+	Factors    *Factors    `json:"factors,omitempty"`
+	Password   *Password   `json:"password,omitempty"`
+	Recovery   *Recovery   `json:"recovery,omitempty"`
 	Delegation *Delegation `json:"delegation,omitempty"`
 }
 
@@ -170,7 +170,7 @@ type Users struct {
 // TODO: Include & Exclude not supported as only needed when
 // Connection is "ZONE". zone requires the zone api (not implemented atm)
 type Network struct {
-	Connection string    `json:"connection,omitempty"`
+	Connection string   `json:"connection,omitempty"`
 	Include    []string `json:"include,omitempty"`
 	Exclude    []string `json:"exclude,omitempty"`
 }
@@ -235,12 +235,12 @@ func (p *PoliciesService) MfaRule() MfaRule {
 // PasswordRule represents the Rule Object from the OKTA API
 // used to create or update a password rule
 type PasswordRule struct {
-	Type       string `json:"type,omitempty"`
-	Status     string `json:"status,omitempty"`
-	Name       string `json:"name,omitempty"`
-	Priority   int    `json:"priority,omitempty"`
+	Type       string            `json:"type,omitempty"`
+	Status     string            `json:"status,omitempty"`
+	Name       string            `json:"name,omitempty"`
+	Priority   int               `json:"priority,omitempty"`
 	Conditions *PolicyConditions `json:"conditions,omitempty"`
-	Actions struct {
+	Actions    struct {
 		PasswordChange           PasswordAction `json:"passwordChange,omitempty"`
 		SelfServicePasswordReset PasswordAction `json:"selfServicePasswordReset,omitempty"`
 		SelfServiceUnlock        PasswordAction `json:"selfServiceUnlock,omitempty"`
@@ -254,12 +254,12 @@ type AuthContext struct {
 // SignOnRule represents the Rule Object from the OKTA API
 // used to create or update a signon rule
 type SignOnRule struct {
-	Type       string `json:"type,omitempty"`
-	Status     string `json:"status,omitempty"`
-	Name       string `json:"name,omitempty"`
-	Priority   int    `json:"priority,omitempty"`
+	Type       string            `json:"type,omitempty"`
+	Status     string            `json:"status,omitempty"`
+	Name       string            `json:"name,omitempty"`
+	Priority   int               `json:"priority,omitempty"`
 	Conditions *PolicyConditions `json:"conditions,omitempty"`
-	Actions struct {
+	Actions    struct {
 		SignOn `json:"signon,omitempty"`
 	} `json:"actions,omitempty"`
 }
@@ -267,32 +267,33 @@ type SignOnRule struct {
 // MfaRule represents the Rule Object from the OKTA API
 // used to create or update a mfa rule
 type MfaRule struct {
-	Type       string `json:"type,omitempty"`
-	Status     string `json:"status,omitempty"`
-	Name       string `json:"name,omitempty"`
-	Priority   int    `json:"priority,omitempty"`
+	Type       string            `json:"type,omitempty"`
+	Status     string            `json:"status,omitempty"`
+	Name       string            `json:"name,omitempty"`
+	Priority   int               `json:"priority,omitempty"`
 	Conditions *PolicyConditions `json:"actions,omitempty"`
 }
 
 type PolicyConditions struct {
-	People *People  `json:"people,omitempty"`
-	AuthContext *AuthContext `json:"authContext,omitempty"`
-	Network *Network `json:"network,omitempty"`
+	People       *People       `json:"people,omitempty"`
+	AuthContext  *AuthContext  `json:"authContext,omitempty"`
+	Network      *Network      `json:"network,omitempty"`
 	AuthProvider *AuthProvider `json:"authProvider,omitempty"`
 }
+
 // Rule represents the complete Rule Object from the OKTA API
 // used to return rule data from a GET request
 type Rule struct {
-	ID          string    `json:"id,omitempty"`
-	Type        string    `json:"type,omitempty"`
-	Status      string    `json:"status,omitempty"`
-	Priority    int       `json:"priority,omitempty"`
-	Name        string    `json:"name,omitempty"`
-	System      bool      `json:"system,omitempty"`
-	Created     time.Time `json:"created,omitempty"`
-	LastUpdated time.Time `json:"lastUpdated,omitempty"`
+	ID          string            `json:"id,omitempty"`
+	Type        string            `json:"type,omitempty"`
+	Status      string            `json:"status,omitempty"`
+	Priority    int               `json:"priority,omitempty"`
+	Name        string            `json:"name,omitempty"`
+	System      bool              `json:"system,omitempty"`
+	Created     time.Time         `json:"created,omitempty"`
+	LastUpdated time.Time         `json:"lastUpdated,omitempty"`
 	Conditions  *PolicyConditions `json:"conditions,omitempty"`
-	Actions struct {
+	Actions     struct {
 		SignOn                   `json:"signon,omitempty"`
 		Enroll                   `json:"enroll,omitempty"`
 		PasswordChange           PasswordAction `json:"passwordChange,omitempty"`
