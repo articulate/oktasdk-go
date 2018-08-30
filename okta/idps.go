@@ -56,7 +56,8 @@ type Endpoints struct {
 }
 
 type IdpGroups struct {
-	Action string `json:"action,omitempty"`
+	Action      string   `json:"action,omitempty"`
+	Assignments []string `json:"assignments,omitempty"`
 }
 
 type Hints struct {
