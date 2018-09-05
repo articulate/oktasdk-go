@@ -11,12 +11,12 @@ import (
 var testTrustedOrigin *TrustedOrigin
 
 func setupTestTrustedOrigin() {
-	scopeTypes := []string{"CORS", "Redirect"}
+	scopeTypes := []string{"CORS", "REDIRECT"}
 
 	var scopes []map[string]string
 
 	for _, scopeType := range scopeTypes {
-		scopes = append(scopes, map[string]string{"Type": scopeType})
+		scopes = append(scopes, map[string]string{"type": scopeType})
 	}
 
 	testTrustedOrigin = &TrustedOrigin{
