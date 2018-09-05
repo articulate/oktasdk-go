@@ -147,3 +147,19 @@ func TestTrustedOriginActivate(t *testing.T) {
 		t.Errorf("TrustedOrigins.ActivateTrustedOrigin returned error: %v", err)
 	}
 }
+
+func TestTrustedOriginsList(t *testing.T) {
+	setup()
+	defer teardown()
+
+	mux.HandleFunc("/trustedOrigins", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		testAuthHeader(t, r)
+		fmt.Fprint(w, "")
+	})
+
+	_, err := client.TrustedOrigins.ListTrustedOrigins()
+	if err != nil {
+		t.Errorf("TrustedOrigins.ListTrustedOrigins returned error: %v", err)
+	}
+}

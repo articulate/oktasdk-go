@@ -138,3 +138,18 @@ func (p *TrustedOriginsService) ActivateTrustedOrigin(id string, activate bool) 
 
 	return resp, err
 }
+
+// ListTrustedOrigins: Lists all Trusted Origins from an Okta Account
+func (p *TrustedOriginsService) ListTrustedOrigins() (*Response, error) {
+	u := fmt.Sprintf("trustedOrigins")
+	req, err := p.client.NewRequest("GET", u, nil)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := p.client.Do(req, nil)
+	if err != nil {
+		return resp, err
+	}
+
+	return resp, err
+}
