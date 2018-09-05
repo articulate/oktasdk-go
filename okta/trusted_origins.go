@@ -98,3 +98,19 @@ func (p *TrustedOriginsService) UpdateTrustedOrigin(id string, trustedOrigin int
 
 	return updateTrustedOrigin, resp, err
 }
+
+// DeleteTrustedOrigin: Delete a Trusted Origin
+// Requires TrustedOrigin ID from TrustedOrigin object
+func (p *TrustedOriginsService) DeleteTrustedOrigin(id string) (*Response, error) {
+	u := fmt.Sprintf("trustedOrigins/%v", id)
+	req, err := p.client.NewRequest("DELETE", u, nil)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := p.client.Do(req, nil)
+	if err != nil {
+		return resp, err
+	}
+
+	return resp, err
+}

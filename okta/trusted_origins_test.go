@@ -109,3 +109,23 @@ func TestTrustedOriginUpdate(t *testing.T) {
 		t.Errorf("client.TrustedOrigins.UpdateTrustedOrigin returned \n\t%+v, want \n\t%+v\n", outputTrustedOrigin.Name, testTrustedOrigin.Name)
 	}
 }
+
+func TestTrustedOriginDelete(t *testing.T) {
+
+	setup()
+	defer teardown()
+	setupTestTrustedOrigin()
+
+	testTrustedOrigin.ID = "ow1y4s2cpS59f1xs2p7"
+
+	mux.HandleFunc("/trustedOrigins/ow1y4s2cpS59f1xs2p7", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "DELETE")
+		testAuthHeader(t, r)
+		fmt.Fprint(w, "")
+	})
+
+	_, err := client.TrustedOrigins.DeleteTrustedOrigin("ow1y4s2cpS59f1xs2p7")
+	if err != nil {
+		t.Errorf("TrustedOrigins.DeleteTrustedOrigin returned error: %v", err)
+	}
+}
