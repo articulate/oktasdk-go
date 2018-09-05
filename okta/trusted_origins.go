@@ -80,3 +80,21 @@ func (p *TrustedOriginsService) CreateTrustedOrigin(trustedOrigin interface{}) (
 
 	return newTrustedOrigin, resp, err
 }
+
+// UpdateTrustedOrigin: Update a Trusted Origin
+// Requires TrustedOrigin ID from TrustedOrigin object & TrustedOrigin object from the desired input policy
+func (p *TrustedOriginsService) UpdateTrustedOrigin(id string, trustedOrigin interface{}) (*TrustedOrigin, *Response, error) {
+	u := fmt.Sprintf("trustedOrigins/%v", id)
+	req, err := p.client.NewRequest("PUT", u, trustedOrigin)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	updateTrustedOrigin := new(TrustedOrigin)
+	resp, err := p.client.Do(req, updateTrustedOrigin)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return updateTrustedOrigin, resp, err
+}

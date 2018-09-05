@@ -55,7 +55,6 @@ func TestGetTrustedOrigin(t *testing.T) {
 }
 
 func TestTrustedOriginCreate(t *testing.T) {
-
 	setup()
 	defer teardown()
 	setupTestTrustedOrigin()
@@ -80,5 +79,33 @@ func TestTrustedOriginCreate(t *testing.T) {
 	}
 	if !reflect.DeepEqual(outputTrustedOrigin, testTrustedOrigin) {
 		t.Errorf("client.TrustedOrigins.CreateTrustedOrigin returned \n\t%+v, want \n\t%+v\n", outputTrustedOrigin, testTrustedOrigin)
+	}
+}
+
+func TestTrustedOriginUpdate(t *testing.T) {
+	setup()
+	defer teardown()
+	setupTestTrustedOrigin()
+	testTrustedOrigin.ID = "ow1y4s2cpS59f1xs2p7"
+
+	testTrustedOrigin.Name = "Testing Update"
+	temp, err := json.Marshal(testTrustedOrigin)
+	if err != nil {
+		t.Errorf("TrustedOrigins.UpdateTrustedOrigin json Marshall returned error: %v", err)
+	}
+	updateTestJSONString := string(temp)
+
+	mux.HandleFunc("/trustedOrigins/ow1y4s2cpS59f1xs2p7", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "PUT")
+		testAuthHeader(t, r)
+		fmt.Fprint(w, updateTestJSONString)
+	})
+
+	outputTrustedOrigin, _, err := client.TrustedOrigins.UpdateTrustedOrigin("ow1y4s2cpS59f1xs2p7", testTrustedOrigin)
+	if err != nil {
+		t.Errorf("client.TrustedOrigins.UpdateTrustedOrigin returned error: %v", err)
+	}
+	if !reflect.DeepEqual(outputTrustedOrigin.Name, testTrustedOrigin.Name) {
+		t.Errorf("client.TrustedOrigins.UpdateTrustedOrigin returned \n\t%+v, want \n\t%+v\n", outputTrustedOrigin.Name, testTrustedOrigin.Name)
 	}
 }
