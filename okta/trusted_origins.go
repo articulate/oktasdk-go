@@ -114,3 +114,27 @@ func (p *TrustedOriginsService) DeleteTrustedOrigin(id string) (*Response, error
 
 	return resp, err
 }
+
+// ActivateTrustedOrigin: Activate/Deactivate a Trusted Origin
+// Requires TrustedOrigin ID from TrustedOrigin object and a boolean to activate or deactivate
+func (p *TrustedOriginsService) ActivateTrustedOrigin(id string, activate bool) (*Response, error) {
+	var a string
+
+	if activate {
+		a = "activate"
+	} else {
+		a = "deactivate"
+	}
+
+	u := fmt.Sprintf("trustedOrigins/%v/lifecycle/%v", id, a)
+	req, err := p.client.NewRequest("POST", u, nil)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := p.client.Do(req, nil)
+	if err != nil {
+		return resp, err
+	}
+
+	return resp, err
+}

@@ -111,7 +111,6 @@ func TestTrustedOriginUpdate(t *testing.T) {
 }
 
 func TestTrustedOriginDelete(t *testing.T) {
-
 	setup()
 	defer teardown()
 	setupTestTrustedOrigin()
@@ -127,5 +126,24 @@ func TestTrustedOriginDelete(t *testing.T) {
 	_, err := client.TrustedOrigins.DeleteTrustedOrigin("ow1y4s2cpS59f1xs2p7")
 	if err != nil {
 		t.Errorf("TrustedOrigins.DeleteTrustedOrigin returned error: %v", err)
+	}
+}
+
+func TestTrustedOriginActivate(t *testing.T) {
+	setup()
+	defer teardown()
+	setupTestTrustedOrigin()
+
+	testTrustedOrigin.ID = "ow1y4s2cpS59f1xs2p7"
+
+	mux.HandleFunc("/trustedOrigins/ow1y4s2cpS59f1xs2p7/lifecycle/activate", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		testAuthHeader(t, r)
+		fmt.Fprint(w, "")
+	})
+
+	_, err := client.TrustedOrigins.ActivateTrustedOrigin("ow1y4s2cpS59f1xs2p7", true)
+	if err != nil {
+		t.Errorf("TrustedOrigins.ActivateTrustedOrigin returned error: %v", err)
 	}
 }
