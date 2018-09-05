@@ -26,7 +26,7 @@ type TrustedOrigin struct {
 
 type TrustedOriginDeactive struct {
 	Href  string              `json:"href,omitempty"`
-	Hints *TrustedOriginHints `json:"hints,omitempty`
+	Hints *TrustedOriginHints `json:"hints,omitempty"`
 }
 
 type TrustedOriginHints struct {
@@ -40,7 +40,7 @@ type TrustedOriginLinks struct {
 
 type TrustedOriginSelf struct {
 	Href  string              `json:"href,omitempty"`
-	Hints *TrustedOriginHints `json:"hints,omitempty`
+	Hints *TrustedOriginHints `json:"hints,omitempty"`
 }
 
 // GetTrustedOrigin: Get a Trusted Origin entry
