@@ -60,3 +60,23 @@ func (p *TrustedOriginsService) GetTrustedOrigin(id string) (*TrustedOrigin, *Re
 
 	return trustedOrigin, resp, err
 }
+
+// CreateTrustedOrigin: Create a Trusted Origin
+// You must pass in the Trusted Origin object created from the desired input trustedOrigin
+func (p *TrustedOriginsService) CreateTrustedOrigin(trustedOrigin interface{}) (*TrustedOrigin, *Response, error) {
+	u := fmt.Sprintf("trustedOrigins")
+	req, err := p.client.NewRequest("POST", u, trustedOrigin)
+
+	if err != nil {
+		return nil, nil, err
+	}
+
+	newTrustedOrigin := new(TrustedOrigin)
+
+	resp, err := p.client.Do(req, newTrustedOrigin)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return newTrustedOrigin, resp, err
+}

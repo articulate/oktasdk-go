@@ -53,3 +53,32 @@ func TestGetTrustedOrigin(t *testing.T) {
 		t.Errorf("client.TrustedOrigins.GetTrustedOrigin returned \n\t%+v, want \n\t%+v\n", outputTrustedOrigin, testTrustedOrigin)
 	}
 }
+
+func TestTrustedOriginCreate(t *testing.T) {
+
+	setup()
+	defer teardown()
+	setupTestTrustedOrigin()
+
+	temp, err := json.Marshal(testTrustedOrigin)
+
+	if err != nil {
+		t.Errorf("TrustedOrigins.CreateTrustedOrigin json Marshall returned error: %v", err)
+	}
+
+	TrustedOriginTestJSONString := string(temp)
+
+	mux.HandleFunc("/trustedOrigins", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "POST")
+		testAuthHeader(t, r)
+		fmt.Fprint(w, TrustedOriginTestJSONString)
+	})
+
+	outputTrustedOrigin, _, err := client.TrustedOrigins.CreateTrustedOrigin(testTrustedOrigin)
+	if err != nil {
+		t.Errorf("client.TrustedOrigins.CreateTrustedOrigin returned error: %v", err)
+	}
+	if !reflect.DeepEqual(outputTrustedOrigin, testTrustedOrigin) {
+		t.Errorf("client.TrustedOrigins.CreateTrustedOrigin returned \n\t%+v, want \n\t%+v\n", outputTrustedOrigin, testTrustedOrigin)
+	}
+}
