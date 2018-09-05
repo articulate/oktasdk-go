@@ -123,7 +123,7 @@ type UserNameTemplate struct {
 	Template string `json:"template,omitempty"`
 }
 
-// GetIdentityProvider: Get an IdP
+// GetIdentityProvider: Get an Identity Provider
 // Requires IdentityProvider ID from IdentityProvider object
 func (p *IdentityProvidersService) GetIdentityProvider(id string) (*IdentityProvider, *Response, error) {
 	u := fmt.Sprintf("idps/%v", id)
@@ -141,8 +141,8 @@ func (p *IdentityProvidersService) GetIdentityProvider(id string) (*IdentityProv
 	return idp, resp, err
 }
 
-// CreateIdentityprovider: Create a identityprovider
-// You must pass in the Identityprovider object created from the desired input identityprovider
+// CreateIdentityProvider: Create an Identity Provider
+// You must pass in the IdentityProvider object created from the desired input IdentityProvider
 func (p *IdentityProvidersService) CreateIdentityProvider(idp interface{}) (*IdentityProvider, *Response, error) {
 	u := fmt.Sprintf("idps")
 	req, err := p.client.NewRequest("POST", u, idp)
@@ -161,8 +161,8 @@ func (p *IdentityProvidersService) CreateIdentityProvider(idp interface{}) (*Ide
 	return newIdp, resp, err
 }
 
-// UpdateIdentityProvider: Update a policy
-// Requires IdentityProvider ID from IdentityProvider object & IdentityProvider object from the desired input policy
+// UpdateIdentityProvider: Update an Identity Provider
+// Requires IdentityProvider ID from IdentityProvider object & IdentityProvider object from the desired input IdentityProvider
 func (p *IdentityProvidersService) UpdateIdentityProvider(id string, idp interface{}) (*IdentityProvider, *Response, error) {
 	u := fmt.Sprintf("idps/%v", id)
 	req, err := p.client.NewRequest("PUT", u, idp)
@@ -179,8 +179,8 @@ func (p *IdentityProvidersService) UpdateIdentityProvider(id string, idp interfa
 	return updateIdentityProvider, resp, err
 }
 
-// DeleteIdentityprovider: Delete a identityprovider
-// Requires Identityprovider ID from Identityprovider object
+// DeleteIdentityProvider: Delete an Identity Provider
+// Requires IdentityProvider ID from IdentityProvider object
 func (p *IdentityProvidersService) DeleteIdentityProvider(id string) (*Response, error) {
 	u := fmt.Sprintf("idps/%v", id)
 	req, err := p.client.NewRequest("DELETE", u, nil)
