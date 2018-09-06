@@ -9,27 +9,59 @@ import (
 	"time"
 )
 
-var testInputPassPolicy *PasswordPolicy
-var testInputSignonPolicy *SignOnPolicy
+var testInputPassPolicy *Policy
+var testInputSignonPolicy *Policy
 var testPassPolicy *Policy
 var testSignonPolicy *Policy
 
-var testPassPolicies *policies
-var testSignonPolicies *policies
+var testPassPolicies *PolicyCollection
+var testSignonPolicies *PolicyCollection
 
-var testInputPassRule *PasswordRule
-var testInputSignonRule *SignOnRule
+var testInputPassRule *Rule
+var testInputSignonRule *Rule
 var testPassRule *Rule
 var testSignonRule *Rule
 
 var testPassRules *rules
 var testSignonRules *rules
 
-func setupTestPolicies() {
-
+func setupPassPolicy() {
 	hmm, _ := time.Parse("2006-01-02T15:04:05.000Z", "2018-02-16T19:59:05.000Z")
 
-	// password policy
+	testPassPolicyLinks := &PolicyLinks{}
+	testPassPolicyLinks.Self.Href = "https://your-domain.okta.com/api/v1/policies/00pedv3qclXeC2aFH0h7"
+	testPassPolicyLinks.Self.Hints.Allow = []string{"GET PUT DELETE"}
+	testPassPolicyLinks.Deactivate.Href = "https://your-domain.okta.com/api/v1/policies/00pedv3qclXeC2aFH0h7/lifecycle/deactivate"
+	testPassPolicyLinks.Deactivate.Hints.Allow = []string{"POST"}
+	testPassPolicyLinks.Rules.Href = "https://your-domain.okta.com/api/v1/policies/00pedv3qclXeC2aFH0h7/rules"
+	testPassPolicyLinks.Rules.Hints.Allow = []string{"GET POST"}
+
+	testPassPolicyGroups := &Groups{
+		Include: []string{"00ge0t33mvT5q62O40h7"},
+	}
+
+	testPassPolicyUsers := &Users{}
+
+	testPassPolicyPeople := &People{
+		Groups: testPassPolicyGroups,
+		Users:  testPassPolicyUsers,
+	}
+
+	testPassPolicyConditions := &PolicyConditions{
+		People: testPassPolicyPeople,
+	}
+
+	testPassPolicyRecovery := &Recovery{}
+
+	testPassPolicyPassword := &Password{}
+	testPassPolicyPassword.Complexity.MinLength = 12
+	testPassPolicyPassword.Age.HistoryCount = 5
+
+	testPassPolicySettings := &PolicySettings{
+		Recovery: testPassPolicyRecovery,
+		Password: testPassPolicyPassword,
+	}
+
 	testPassPolicy = &Policy{
 		ID:          "00pedv3qclXeC2aFH0h7",
 		Type:        "PASSWORD",
@@ -40,21 +72,43 @@ func setupTestPolicies() {
 		Status:      "ACTIVE",
 		Created:     hmm,
 		LastUpdated: hmm,
+		Conditions:  testPassPolicyConditions,
+		Settings:    testPassPolicySettings,
+		Links:       testPassPolicyLinks,
 	}
-	testPassPolicy.Conditions.People.Groups.Include = []string{"00ge0t33mvT5q62O40h7"}
-	//testPassPolicy.Conditions.AuthProvider.Provider = "OKTA"
+
 	testPassPolicy.Settings.Recovery.Factors.OktaEmail.Status = "ACTIVE"
 	testPassPolicy.Settings.Recovery.Factors.RecoveryQuestion.Status = "ACTIVE"
-	testPassPolicy.Settings.Password.Complexity.MinLength = 12
-	testPassPolicy.Settings.Password.Age.HistoryCount = 5
-	testPassPolicy.Links.Self.Href = "https://your-domain.okta.com/api/v1/policies/00pedv3qclXeC2aFH0h7"
-	testPassPolicy.Links.Self.Hints.Allow = []string{"GET PUT DELETE"}
-	testPassPolicy.Links.Deactivate.Href = "https://your-domain.okta.com/api/v1/policies/00pedv3qclXeC2aFH0h7/lifecycle/deactivate"
-	testPassPolicy.Links.Deactivate.Hints.Allow = []string{"POST"}
-	testPassPolicy.Links.Rules.Href = "https://your-domain.okta.com/api/v1/policies/00pedv3qclXeC2aFH0h7/rules"
-	testPassPolicy.Links.Rules.Hints.Allow = []string{"GET POST"}
+}
 
-	// signon policy
+func setupSignonPolicy() {
+	hmm, _ := time.Parse("2006-01-02T15:04:05.000Z", "2018-02-16T19:59:05.000Z")
+
+	testSignonPolicyLinks := &PolicyLinks{}
+
+	testSignonPolicyGroups := &Groups{
+		Include: []string{""},
+	}
+
+	testSignonPolicyPeople := &People{
+		Groups: testSignonPolicyGroups,
+	}
+
+	testSignonPolicyConditions := &PolicyConditions{
+		People: testSignonPolicyPeople,
+	}
+
+	testSignonPolicyRecovery := &Recovery{}
+
+	testSignonPolicyPassword := &Password{}
+	testSignonPolicyPassword.Complexity.MinLength = 12
+	testSignonPolicyPassword.Age.HistoryCount = 5
+
+	testSignonPolicySettings := &PolicySettings{
+		Recovery: testSignonPolicyRecovery,
+		Password: testSignonPolicyPassword,
+	}
+
 	testSignonPolicy = &Policy{
 		ID:          "00pedv3qclXeC2aFH0h7",
 		Type:        "OKTA_SIGN_ON",
@@ -65,7 +119,11 @@ func setupTestPolicies() {
 		Status:      "ACTIVE",
 		Created:     hmm,
 		LastUpdated: hmm,
+		Conditions:  testSignonPolicyConditions,
+		Settings:    testSignonPolicySettings,
+		Links:       testSignonPolicyLinks,
 	}
+
 	testSignonPolicy.Conditions.People.Groups.Include = []string{"00ge0t33mvT5q62O40h7"}
 	testSignonPolicy.Links.Self.Href = "https://your-domain.okta.com/api/v1/policies/00pedv3qclXeC2aFH0h7"
 	testSignonPolicy.Links.Self.Hints.Allow = []string{"GET PUT DELETE"}
@@ -73,40 +131,101 @@ func setupTestPolicies() {
 	testSignonPolicy.Links.Deactivate.Hints.Allow = []string{"POST"}
 	testSignonPolicy.Links.Rules.Href = "https://your-domain.okta.com/api/v1/policies/00pedv3qclXeC2aFH0h7/rules"
 	testSignonPolicy.Links.Rules.Hints.Allow = []string{"GET POST"}
+}
 
-	// input password policy
-	testInputPassPolicy = &PasswordPolicy{
+func setupInputPassPolicy() {
+
+	testInputPassPolicyLinks := &PolicyLinks{}
+
+	testInputPassPolicyGroups := &Groups{
+		Include: []string{""},
+	}
+
+	testInputPassPolicyPeople := &People{
+		Groups: testInputPassPolicyGroups,
+	}
+
+	testInputPassPolicyConditions := &PolicyConditions{
+		People: testInputPassPolicyPeople,
+	}
+
+	testInputPassPolicyRecovery := &Recovery{}
+
+	testInputPassPolicyPassword := &Password{}
+	testInputPassPolicyPassword.Complexity.MinLength = 12
+	testInputPassPolicyPassword.Age.HistoryCount = 5
+
+	testInputPassPolicySettings := &PolicySettings{
+		Recovery: testInputPassPolicyRecovery,
+		Password: testInputPassPolicyPassword,
+	}
+
+	testInputPassPolicy = &Policy{
 		Type:        "PASSWORD",
 		Name:        "PasswordPolicy",
 		Description: "Unit Test Password Policy",
 		Priority:    2,
 		Status:      "ACTIVE",
+		Conditions:  testInputPassPolicyConditions,
+		Settings:    testInputPassPolicySettings,
+		Links:       testInputPassPolicyLinks,
 	}
-	testInputPassPolicy.Conditions.People.Groups.Include = []string{"00ge0t33mvT5q62O40h7"}
-	//testInputPassPolicy.Conditions.AuthProvider.Provider = "OKTA"
-	testInputPassPolicy.Settings.Recovery.Factors.OktaEmail.Status = "ACTIVE"
-	testInputPassPolicy.Settings.Recovery.Factors.RecoveryQuestion.Status = "ACTIVE"
-	testInputPassPolicy.Settings.Password.Complexity.MinLength = 12
-	testInputPassPolicy.Settings.Password.Age.HistoryCount = 5
 
-	// input signon policy
-	testInputSignonPolicy = &SignOnPolicy{
-		Type:        "OKTA_SIGN_ON",
-		Name:        "SignOnPolicy",
-		Description: "Unit Test SignOn Policy",
+}
+
+func setupInputSignonPolicy() {
+	testInputSignonPolicyLinks := &PolicyLinks{}
+
+	testInputSignonPolicyGroups := &Groups{
+		Include: []string{""},
+	}
+
+	testInputSignonPolicyPeople := &People{
+		Groups: testInputSignonPolicyGroups,
+	}
+
+	testInputSignonPolicyConditions := &PolicyConditions{
+		People: testInputSignonPolicyPeople,
+	}
+
+	testInputSignonPolicyRecovery := &Recovery{}
+
+	testInputSignonPolicyPassword := &Password{}
+	testInputSignonPolicyPassword.Complexity.MinLength = 12
+	testInputSignonPolicyPassword.Age.HistoryCount = 5
+
+	testInputSignonPolicySettings := &PolicySettings{
+		Recovery: testInputSignonPolicyRecovery,
+		Password: testInputSignonPolicyPassword,
+	}
+
+	testInputSignonPolicy = &Policy{
+		Type:        "PASSWORD",
+		Name:        "PasswordPolicy",
+		Description: "Unit Test Password Policy",
 		Priority:    2,
 		Status:      "ACTIVE",
+		Conditions:  testInputSignonPolicyConditions,
+		Settings:    testInputSignonPolicySettings,
+		Links:       testInputSignonPolicyLinks,
 	}
+
 	testInputSignonPolicy.Conditions.People.Groups.Include = []string{"00ge0t33mvT5q62O40h7"}
+}
+
+func setupTestPolicies() {
+	setupPassPolicy()
+	setupSignonPolicy()
+	setupInputPassPolicy()
+	setupInputSignonPolicy()
 
 	// slice of password policies
-	testPassPolicies = new(policies)
+	testPassPolicies = new(PolicyCollection)
 	testPassPolicies.Policies = append(testPassPolicies.Policies, *testPassPolicy)
 
 	// slice of signon policies
-	testSignonPolicies = new(policies)
+	testSignonPolicies = new(PolicyCollection)
 	testSignonPolicies.Policies = append(testSignonPolicies.Policies, *testSignonPolicy)
-
 }
 
 func setupTestRules() {
@@ -123,8 +242,16 @@ func setupTestRules() {
 		System:      false,
 		Created:     hmm,
 		LastUpdated: hmm,
+		Conditions: &PolicyConditions{
+			People: &People{
+				Users: &Users{},
+			},
+			Network: &Network{},
+		},
+		Links: &PolicyLinks{},
 	}
 	testPassPolicy.Conditions.People.Users.Exclude = []string{"00ge0t33mvT5q62O40h7"}
+
 	testPassRule.Conditions.Network.Connection = "ANYWHERE"
 	testPassRule.Actions.PasswordChange.Access = "ALLOW"
 	testPassRule.Actions.SelfServicePasswordReset.Access = "ALLOW"
@@ -137,12 +264,20 @@ func setupTestRules() {
 	testPassRule.Links.Rules.Hints.Allow = []string{"GET POST"}
 
 	// input password rule
-	testInputPassRule = &PasswordRule{
+	testInputPassRule = &Rule{
 		Type:     "PASSWORD",
 		Status:   "ACTIVE",
 		Name:     "PasswordRule",
 		Priority: 2,
+		Conditions: &PolicyConditions{
+			People: &People{
+				Users: &Users{},
+			},
+			Network: &Network{},
+		},
+		Links: &PolicyLinks{},
 	}
+
 	testPassPolicy.Conditions.People.Users.Exclude = []string{"00ge0t33mvT5q62O40h7"}
 	testInputPassRule.Conditions.Network.Connection = "ANYWHERE"
 	testInputPassRule.Actions.PasswordChange.Access = "ALLOW"
@@ -159,6 +294,13 @@ func setupTestRules() {
 		System:      false,
 		Created:     hmm,
 		LastUpdated: hmm,
+		Conditions: &PolicyConditions{
+			People: &People{
+				Users: &Users{},
+			},
+			Network: &Network{},
+		},
+		Links: &PolicyLinks{},
 	}
 	testPassPolicy.Conditions.People.Users.Exclude = []string{"00ge0t33mvT5q62O40h7"}
 	testSignonRule.Conditions.Network.Connection = "ANYWHERE"
@@ -172,11 +314,18 @@ func setupTestRules() {
 	testSignonRule.Links.Rules.Hints.Allow = []string{"GET POST"}
 
 	// input signon rule
-	testInputSignonRule = &SignOnRule{
+	testInputSignonRule = &Rule{
 		Type:     "OKTA_SIGN_ON",
 		Status:   "ACTIVE",
 		Name:     "SignOnRule",
 		Priority: 2,
+		Conditions: &PolicyConditions{
+			People: &People{
+				Users: &Users{},
+			},
+			Network: &Network{},
+		},
+		Links: &PolicyLinks{},
 	}
 	testPassPolicy.Conditions.People.Users.Exclude = []string{"00ge0t33mvT5q62O40h7"}
 	testInputSignonRule.Conditions.Network.Connection = "ANYWHERE"
@@ -220,7 +369,7 @@ func TestGetPolicy(t *testing.T) {
 	}
 }
 
-func TestiGetRule(t *testing.T) {
+func TestGetRule(t *testing.T) {
 
 	setup()
 	defer teardown()
@@ -232,7 +381,7 @@ func TestiGetRule(t *testing.T) {
 	}
 	ruleTestJSONString := string(temp)
 
-	mux.HandleFunc("/policies/00pedv3qclXeC2aFH0h7rules/0predz80vvMTwva7T0h7", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/policies/00pedv3qclXeC2aFH0h7/rules/0predz80vvMTwva7T0h7", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
 		testAuthHeader(t, r)
 		fmt.Fprint(w, ruleTestJSONString)
@@ -247,7 +396,7 @@ func TestiGetRule(t *testing.T) {
 	}
 }
 
-func testGetPoliciesByType(t *testing.T, policytype string, policies *policies) {
+func testGetPoliciesByType(t *testing.T, policytype string, policies *PolicyCollection) {
 
 	setup()
 	defer teardown()
