@@ -86,16 +86,19 @@ type Enroll struct {
 // Password policy settings password obj
 type Password struct {
 	Complexity struct {
-		MinLength         int      `json:"minLength,omitempty"`
-		MinLowerCase      int      `json:"minLowerCase,omitempty"`
-		MinUpperCase      int      `json:"minUpperCase,omitempty"`
-		MinNumber         int      `json:"minNumber,omitempty"`
-		MinSymbol         int      `json:"minSymbol,omitempty"`
-		ExcludeUsername   bool     `json:"excludeUsername,omitempty"`
+		MinLength int `json:"minLength,omitempty"`
+		// omitempty considers zero values on primitives empty. Thus if you have a value like one of these where the
+		// default is 1 but 0 is valid, you would never be able to set them to 0 because it would omit them and the
+		// API would default them. Same goes for other primitives.
+		MinLowerCase      int      `json:"minLowerCase"`
+		MinUpperCase      int      `json:"minUpperCase"`
+		MinNumber         int      `json:"minNumber"`
+		MinSymbol         int      `json:"minSymbol"`
+		ExcludeUsername   bool     `json:"excludeUsername"`
 		ExcludeAttributes []string `json:"excludeAttributes,omitempty"`
 		Dictionary        struct {
 			Common struct {
-				Exclude bool `json:"exclude,omitempty"`
+				Exclude bool `json:"exclude"`
 			} `json:"common,omitempty"`
 		} `json:"dictionary,omitempty"`
 	} `json:"complexity,omitempty"`
@@ -112,7 +115,7 @@ type Password struct {
 	} `json:"lockout,omitempty"`
 }
 
-// Passowrd policy settings recover obj
+// Password policy settings recover obj
 type Recovery struct {
 	Factors struct {
 		RecoveryQuestion struct {
