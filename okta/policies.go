@@ -39,13 +39,13 @@ type PolicySettings struct {
 
 // Mfa policy settings factors obj
 type Factors struct {
-	GoogleOtp    FactorProvider `json:"google_otp,omitempty"`
-	OktaOtp      FactorProvider `json:"okta_otp,omitempty"`
-	OktaPush     FactorProvider `json:"okta_push,omitempty"`
-	OktaQuestion FactorProvider `json:"okta_question,omitempty"`
-	OktaSms      FactorProvider `json:"okta_sms,omitempty"`
-	RsaToken     FactorProvider `json:"rsa_token,omitempty"`
-	SymantecVip  FactorProvider `json:"symantec_vip,omitempty"`
+	GoogleOtp    *FactorProvider `json:"google_otp,omitempty"`
+	OktaOtp      *FactorProvider `json:"okta_otp,omitempty"`
+	OktaPush     *FactorProvider `json:"okta_push,omitempty"`
+	OktaQuestion *FactorProvider `json:"okta_question,omitempty"`
+	OktaSms      *FactorProvider `json:"okta_sms,omitempty"`
+	RsaToken     *FactorProvider `json:"rsa_token,omitempty"`
+	SymantecVip  *FactorProvider `json:"symantec_vip,omitempty"`
 }
 
 // FactorProvider represents a FactorProvider
