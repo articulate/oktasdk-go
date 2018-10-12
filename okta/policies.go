@@ -39,34 +39,19 @@ type PolicySettings struct {
 
 // Mfa policy settings factors obj
 type Factors struct {
-	GoogleOtp struct {
-		Consent `json:"consent,omitempty"`
-		Enroll  `json:"enroll,omitempty"`
-	} `json:"google_otp,omitempty"`
-	OktaOtp struct {
-		Consent `json:"consent,omitempty"`
-		Enroll  `json:"enroll,omitempty"`
-	} `json:"okta_otp,omitempty"`
-	OktaPush struct {
-		Consent `json:"consent,omitempty"`
-		Enroll  `json:"enroll,omitempty"`
-	} `json:"okta_push,omitempty"`
-	OktaQuestion struct {
-		Consent `json:"consent,omitempty"`
-		Enroll  `json:"enroll,omitempty"`
-	} `json:"okta_question,omitempty"`
-	OktaSms struct {
-		Consent `json:"consent,omitempty"`
-		Enroll  `json:"enroll,omitempty"`
-	} `json:"okta_sms,omitempty"`
-	RsaToken struct {
-		Consent `json:"consent,omitempty"`
-		Enroll  `json:"enroll,omitempty"`
-	} `json:"rsa_token,omitempty"`
-	SymantecVip struct {
-		Consent `json:"consent,omitempty"`
-		Enroll  `json:"enroll,omitempty"`
-	} `json:"symantec_vip,omitempty"`
+	GoogleOtp    FactorType `json:"google_otp,omitempty"`
+	OktaOtp      FactorType `json:"okta_otp,omitempty"`
+	OktaPush     FactorType `json:"okta_push,omitempty"`
+	OktaQuestion FactorType `json:"okta_question,omitempty"`
+	OktaSms      FactorType `json:"okta_sms,omitempty"`
+	RsaToken     FactorType `json:"rsa_token,omitempty"`
+	SymantecVip  FactorType `json:"symantec_vip,omitempty"`
+}
+
+// FactorType represents a FactorType
+type FactorType struct {
+	Consent `json:"consent,omitempty"`
+	Enroll  `json:"enroll,omitempty"`
 }
 
 // Mfa policy factors consent obj
