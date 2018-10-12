@@ -39,17 +39,17 @@ type PolicySettings struct {
 
 // Mfa policy settings factors obj
 type Factors struct {
-	GoogleOtp    FactorType `json:"google_otp,omitempty"`
-	OktaOtp      FactorType `json:"okta_otp,omitempty"`
-	OktaPush     FactorType `json:"okta_push,omitempty"`
-	OktaQuestion FactorType `json:"okta_question,omitempty"`
-	OktaSms      FactorType `json:"okta_sms,omitempty"`
-	RsaToken     FactorType `json:"rsa_token,omitempty"`
-	SymantecVip  FactorType `json:"symantec_vip,omitempty"`
+	GoogleOtp    FactorProvider `json:"google_otp,omitempty"`
+	OktaOtp      FactorProvider `json:"okta_otp,omitempty"`
+	OktaPush     FactorProvider `json:"okta_push,omitempty"`
+	OktaQuestion FactorProvider `json:"okta_question,omitempty"`
+	OktaSms      FactorProvider `json:"okta_sms,omitempty"`
+	RsaToken     FactorProvider `json:"rsa_token,omitempty"`
+	SymantecVip  FactorProvider `json:"symantec_vip,omitempty"`
 }
 
-// FactorType represents a FactorType
-type FactorType struct {
+// FactorProvider represents a FactorProvider
+type FactorProvider struct {
 	Consent `json:"consent,omitempty"`
 	Enroll  `json:"enroll,omitempty"`
 }
