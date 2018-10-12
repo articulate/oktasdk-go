@@ -39,13 +39,19 @@ type PolicySettings struct {
 
 // Mfa policy settings factors obj
 type Factors struct {
+	Duo          *FactorProvider `json:"duo,omitempty"`
+	FidoU2f      *FactorProvider `json:"fido_u2f,omitempty"`
+	FidoWebauthn *FactorProvider `json:"fido_webauthn,omitempty"`
 	GoogleOtp    *FactorProvider `json:"google_otp,omitempty"`
+	OktaCall     *FactorProvider `json:"okta_call,omitempty"`
 	OktaOtp      *FactorProvider `json:"okta_otp,omitempty"`
+	OktaPassword *FactorProvider `json:"okta_password,omitempty"`
 	OktaPush     *FactorProvider `json:"okta_push,omitempty"`
 	OktaQuestion *FactorProvider `json:"okta_question,omitempty"`
 	OktaSms      *FactorProvider `json:"okta_sms,omitempty"`
 	RsaToken     *FactorProvider `json:"rsa_token,omitempty"`
 	SymantecVip  *FactorProvider `json:"symantec_vip,omitempty"`
+	YubikeyToken *FactorProvider `json:"yubikey_token,omitempty"`
 }
 
 // FactorProvider represents a FactorProvider
