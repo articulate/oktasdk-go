@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/google/go-querystring/query"
 	"io"
 	"io/ioutil"
 	"net/http"
@@ -14,6 +13,8 @@ import (
 	"strconv"
 	"sync"
 	"time"
+
+	"github.com/google/go-querystring/query"
 )
 
 const (
