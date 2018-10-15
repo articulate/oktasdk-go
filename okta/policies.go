@@ -213,17 +213,23 @@ type PolicyLinks struct {
 
 // Return the PasswordRule object. Used to create & update the password rule
 func (p *PoliciesService) PasswordRule() PasswordRule {
-	return PasswordRule{}
+	return PasswordRule{
+		Type: "PASSWORD",
+	}
 }
 
 // Return the SignOnRule object. Used to create & update the signon rule
 func (p *PoliciesService) SignOnRule() SignOnRule {
-	return SignOnRule{}
+	return SignOnRule{
+		Type: "SIGN_ON",
+	}
 }
 
 // Return the MfaRule object. Used to create & update the mfa rule
 func (p *PoliciesService) MfaRule() MfaRule {
-	return MfaRule{}
+	return MfaRule{
+		Type: "MFA_ENROLL",
+	}
 }
 
 // PasswordRule represents the Rule Object from the OKTA API
@@ -265,7 +271,13 @@ type MfaRule struct {
 	Status     string            `json:"status,omitempty"`
 	Name       string            `json:"name,omitempty"`
 	Priority   int               `json:"priority,omitempty"`
-	Conditions *PolicyConditions `json:"actions,omitempty"`
+	Conditions *PolicyConditions `json:"conditions,omitempty"`
+	Actions    *MfaRuleActions   `json:"actions,omitempty"`
+}
+
+// MfaRuleActions represents actions that can be performed against an MFA Policy Rule
+type MfaRuleActions struct {
+	Enroll *Enroll `json:"enroll,omitempty"`
 }
 
 type PolicyConditions struct {
