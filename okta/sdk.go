@@ -101,6 +101,9 @@ type Client struct {
 
 	// Service for Working with Trusted Origins
 	TrustedOrigins *TrustedOriginsService
+
+	// Org service for administrating org level resources
+	Org *OrgService
 }
 
 type service struct {
@@ -156,6 +159,7 @@ func NewClientWithBaseURL(httpClient *http.Client, baseURL *url.URL, apiToken st
 	c.Schemas = (*SchemasService)(&c.common)
 	c.IdentityProviders = (*IdentityProvidersService)(&c.common)
 	c.TrustedOrigins = (*TrustedOriginsService)(&c.common)
+	c.Org = (*OrgService)(&c.common)
 	return c
 }
 
