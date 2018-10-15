@@ -6,7 +6,7 @@
         "status": "ACTIVE",
         "_links": {
             "self": {
-                "href": "https://rise-dev.oktapreview.com/api/v1/org/factors/google_otp",
+                "href": "https://whatever.com/api/v1/org/factors/google_otp",
                 "hints": {
                     "allow": [
                         "GET"
@@ -14,7 +14,7 @@
                 }
             },
             "deactivate": {
-                "href": "https://rise-dev.oktapreview.com/api/v1/org/factors/google_otp/lifecycle/deactivate",
+                "href": "https://whatever.com/api/v1/org/factors/google_otp/lifecycle/deactivate",
                 "hints": {
                     "allow": [
                         "POST"
@@ -30,7 +30,7 @@
         "status": "INACTIVE",
         "_links": {
             "activate": {
-                "href": "https://rise-dev.oktapreview.com/api/v1/org/factors/okta_question/lifecycle/activate",
+                "href": "https://whatever.com/api/v1/org/factors/okta_question/lifecycle/activate",
                 "hints": {
                     "allow": [
                         "POST"
@@ -38,7 +38,7 @@
                 }
             },
             "self": {
-                "href": "https://rise-dev.oktapreview.com/api/v1/org/factors/okta_question",
+                "href": "https://whatever.com/api/v1/org/factors/okta_question",
                 "hints": {
                     "allow": [
                         "GET"
@@ -54,7 +54,7 @@
         "status": "ACTIVE",
         "_links": {
             "self": {
-                "href": "https://rise-dev.oktapreview.com/api/v1/org/factors/okta_otp",
+                "href": "https://whatever.com/api/v1/org/factors/okta_otp",
                 "hints": {
                     "allow": [
                         "GET"
@@ -78,7 +78,7 @@
         "status": "ACTIVE",
         "_links": {
             "self": {
-                "href": "https://rise-dev.oktapreview.com/api/v1/org/factors/okta_sms",
+                "href": "https://whatever.com/api/v1/org/factors/okta_sms",
                 "hints": {
                     "allow": [
                         "GET"
@@ -86,7 +86,7 @@
                 }
             },
             "deactivate": {
-                "href": "https://rise-dev.oktapreview.com/api/v1/org/factors/okta_sms/lifecycle/deactivate",
+                "href": "https://whatever.com/api/v1/org/factors/okta_sms/lifecycle/deactivate",
                 "hints": {
                     "allow": [
                         "POST"
@@ -110,7 +110,7 @@
                 }
             },
             "self": {
-                "href": "https://rise-dev.oktapreview.com/api/v1/org/factors/symantec_vip",
+                "href": "https://whatever.com/api/v1/org/factors/symantec_vip",
                 "hints": {
                     "allow": [
                         "GET"
@@ -126,7 +126,7 @@
         "status": "NOT_SETUP",
         "_links": {
             "activate": {
-                "href": "https://rise-dev.oktapreview.com/api/v1/org/factors/rsa_token/lifecycle/activate",
+                "href": "https://whatever.com/api/v1/org/factors/rsa_token/lifecycle/activate",
                 "hints": {
                     "allow": [
                         "POST"
@@ -134,7 +134,7 @@
                 }
             },
             "self": {
-                "href": "https://rise-dev.oktapreview.com/api/v1/org/factors/rsa_token",
+                "href": "https://whatever.com/api/v1/org/factors/rsa_token",
                 "hints": {
                     "allow": [
                         "GET"
