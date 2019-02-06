@@ -67,9 +67,7 @@ type BaseSubSchema struct {
 	MinLength   int           `json:"minLength,omitempty"`
 	MaxLength   int           `json:"maxLength,omitempty"`
 	Permissions []Permissions `json:"permissions"`
-	Master      struct {
-		Type string `json:"type"`
-	} `json:"master"`
+	Master      *Master       `json:"master,omitempty"`
 }
 
 // User Profiles Custom SubSchema
@@ -91,9 +89,11 @@ type CustomSubSchema struct {
 	Enum        []string      `json:"enum,omitempty"`
 	OneOf       []OneOf       `json:"oneOf,omitempty"`
 	Permissions []Permissions `json:"permissions"`
-	Master      struct {
-		Type string `json:"type"`
-	} `json:"master"`
+	Master      *Master       `json:"master,omitempty"`
+}
+
+type Master struct {
+	Type string `json:"type,omitempty"`
 }
 
 // Permissions obj for User Profiles SubSchemas
@@ -312,7 +312,7 @@ func (s *SchemasService) GetUserBaseSubSchema(index string, obj map[string]inter
 		for k2, v2 := range v.(map[string]interface{}) {
 			switch k2 {
 			case "type":
-				subSchema.Master.Type = v2.(string)
+				subSchema.Master = &Master{Type: v2.(string)}
 			}
 		}
 	}
@@ -406,7 +406,7 @@ func (s *SchemasService) GetUserCustomSubSchema(index string, obj map[string]int
 		for k2, v2 := range v.(map[string]interface{}) {
 			switch k2 {
 			case "type":
-				subSchema.Master.Type = v2.(string)
+				subSchema.Master = &Master{Type: v2.(string)}
 			}
 		}
 	}
