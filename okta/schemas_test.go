@@ -135,7 +135,7 @@ func setupTestSchemas() {
 		MinLength:  1,
 		MaxLength:  50,
 	}
-	testBaseSubSchema.Master.Type = "PROFILE_MASTER"
+	testBaseSubSchema.Master = &Master{Type: "PROFILE_MASTER"}
 	testBaseSubSchema.Permissions = append(testBaseSubSchema.Permissions, *testPermissions)
 
 	testCustomSubSchema = &CustomSubSchema{
@@ -153,7 +153,7 @@ func setupTestSchemas() {
 		Enum:        []string{"S", "M", "L", "XL"},
 	}
 	testCustomSubSchema.Items.Type = "string"
-	testCustomSubSchema.Master.Type = "PROFILE_MASTER"
+	testBaseSubSchema.Master = &Master{Type: "PROFILE_MASTER"}
 	testCustomSubSchema.OneOf = append(testCustomSubSchema.OneOf, *testOneOf)
 	testCustomSubSchema.Permissions = append(testCustomSubSchema.Permissions, *testPermissions)
 
@@ -267,6 +267,7 @@ func TestSubSchemaCustomGet(t *testing.T) {
 	}
 
 	custom, err := client.Schemas.GetUserCustomSubSchema("testSubSchema", propMap)
+	testCustomSubSchema.Master = &Master{Type: "PROFILE_MASTER"}
 	if err != nil {
 		t.Errorf("SchemaCustomSubSchema.Get returned error: %v", err)
 	}
