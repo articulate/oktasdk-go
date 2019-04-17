@@ -70,6 +70,7 @@ type IdentityProvider struct {
 	ID          string     `json:"id,omitempty"`
 	Type        string     `json:"type,omitempty"`
 	Status      string     `json:"status,omitempty"`
+	IssuerMode  string     `json:"issuerMode,omitempty"`
 	Name        string     `json:"name,omitempty"`
 	Created     *time.Time `json:"created,omitempty"`
 	LastUpdated *time.Time `json:"lastUpdated,omitempty"`
