@@ -54,8 +54,8 @@ func setupPassPolicy() {
 	testPassPolicyRecovery := &Recovery{}
 
 	testPassPolicyPassword := &Password{}
-	testPassPolicyPassword.Complexity.MinLength = 12
-	testPassPolicyPassword.Age.HistoryCount = 5
+	testPassPolicyPassword.Complexity.MinLength = intPtr(12)
+	testPassPolicyPassword.Age.HistoryCount = intPtr(5)
 
 	testPassPolicySettings := &PolicySettings{
 		Recovery: testPassPolicyRecovery,
@@ -101,8 +101,8 @@ func setupSignonPolicy() {
 	testSignonPolicyRecovery := &Recovery{}
 
 	testSignonPolicyPassword := &Password{}
-	testSignonPolicyPassword.Complexity.MinLength = 12
-	testSignonPolicyPassword.Age.HistoryCount = 5
+	testSignonPolicyPassword.Complexity.MinLength = intPtr(12)
+	testSignonPolicyPassword.Age.HistoryCount = intPtr(5)
 
 	testSignonPolicySettings := &PolicySettings{
 		Recovery: testSignonPolicyRecovery,
@@ -152,8 +152,8 @@ func setupInputPassPolicy() {
 	testInputPassPolicyRecovery := &Recovery{}
 
 	testInputPassPolicyPassword := &Password{}
-	testInputPassPolicyPassword.Complexity.MinLength = 12
-	testInputPassPolicyPassword.Age.HistoryCount = 5
+	testInputPassPolicyPassword.Complexity.MinLength = intPtr(12)
+	testInputPassPolicyPassword.Age.HistoryCount = intPtr(5)
 
 	testInputPassPolicySettings := &PolicySettings{
 		Recovery: testInputPassPolicyRecovery,
@@ -191,8 +191,8 @@ func setupInputSignonPolicy() {
 	testInputSignonPolicyRecovery := &Recovery{}
 
 	testInputSignonPolicyPassword := &Password{}
-	testInputSignonPolicyPassword.Complexity.MinLength = 12
-	testInputSignonPolicyPassword.Age.HistoryCount = 5
+	testInputSignonPolicyPassword.Complexity.MinLength = intPtr(12)
+	testInputSignonPolicyPassword.Age.HistoryCount = intPtr(5)
 
 	testInputSignonPolicySettings := &PolicySettings{
 		Recovery: testInputSignonPolicyRecovery,
