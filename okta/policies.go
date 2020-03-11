@@ -103,7 +103,7 @@ type Password struct {
 		MaxAttempts                     *int     `json:"maxAttempts,omitempty"`
 		AutoUnlockMinutes               *int     `json:"autoUnlockMinutes,omitempty"`
 		ShowLockoutFailures             bool     `json:"showLockoutFailures,omitempty"`
-		UserLockoutNotificationChannels []string `json:"UserLockoutNotificationChannels,omitempty"`
+		UserLockoutNotificationChannels []string `json:"userLockoutNotificationChannels,omitempty"`
 	} `json:"lockout,omitempty"`
 }
 
